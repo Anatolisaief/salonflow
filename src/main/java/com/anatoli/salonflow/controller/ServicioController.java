@@ -1,0 +1,49 @@
+package com.anatoli.salonflow.controller;
+
+import com.anatoli.salonflow.model.Cliente;
+import com.anatoli.salonflow.model.Servicio;
+import com.anatoli.salonflow.repository.ServicioRepository;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/servicios")
+public class ServicioController {
+
+    private final ServicioRepository servicioRepository;
+
+    public ServicioController(ServicioRepository servicioRepository) {
+        this.servicioRepository = servicioRepository;
+    }
+
+    @GetMapping
+    public List<Servicio> listarServicios() {
+        return servicioRepository.findAll();
+    }
+
+    @PostMapping
+    public Servicio crearServicio(@RequestBody Servicio servicio) {
+        return servicioRepository.save(servicio);
+    }
+
+    @GetMapping("/{id}")
+    public Servicio obtenerServicioPorId(@PathVariable Long id) {
+        return servicioRepository.findById(id).orElse(null);
+    }
+
+    @PutMapping("/{id}")
+    public Servicio actualizarServicio(@PathVariable Long id, @RequestBody Servicio servicioActualizado) {
+        return servicioRepository.findById(id).map(cliente -> {
+            cliente.setNombre(servicioActualizado.getNombre());
+            cliente.setPrecio(servicioActualizado.getPrecio());
+            cliente.setDuracion(servicioActualizado.getDuracion());
+            return servicioRepository.save(cliente);
+        }).orElse(null);
+    }
+
+    @DeleteMapping("/{id}")
+    public void eliminarServicio(@PathVariable Long id) {
+        servicioRepository.deleteById(id);
+    }
+}
