@@ -1,6 +1,6 @@
 package com.anatoli.salonflow.controller;
 
-import com.anatoli.salonflow.model.Cliente;
+
 import com.anatoli.salonflow.model.Servicio;
 import com.anatoli.salonflow.repository.ServicioRepository;
 import org.springframework.web.bind.annotation.*;
@@ -34,11 +34,11 @@ public class ServicioController {
 
     @PutMapping("/{id}")
     public Servicio actualizarServicio(@PathVariable Long id, @RequestBody Servicio servicioActualizado) {
-        return servicioRepository.findById(id).map(cliente -> {
-            cliente.setNombre(servicioActualizado.getNombre());
-            cliente.setPrecio(servicioActualizado.getPrecio());
-            cliente.setDuracion(servicioActualizado.getDuracion());
-            return servicioRepository.save(cliente);
+        return servicioRepository.findById(id).map(servicio -> {
+            servicio.setNombre(servicioActualizado.getNombre());
+            servicio.setPrecio(servicioActualizado.getPrecio());
+            servicio.setDuracion(servicioActualizado.getDuracion());
+            return servicioRepository.save(servicio);
         }).orElse(null);
     }
 
