@@ -8,9 +8,19 @@
     <title>SalonFlow</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
 
     <link rel="stylesheet" href="css/style.css">
 </head>
+
+<script src="js/index.js"></script>
 
 <body>
 
@@ -71,55 +81,95 @@
 
     </p>
 
-    <div class="mt-5">
+    <section class="container my-5">
 
-        <h2 class="mb-4">
+        <h2 class="mb-4 text-center">Panel principal</h2>
 
-            Panel principal
+        <div class="row g-3">
 
-        </h2>
+            <!-- Clientes -->
 
-        <div class="row justify-content-center g-3">
-
-            <div class="col-md-4 col-lg-2">
-                <a href="clientes.html" class="btn btn-primary w-100 p-3">
-                    Clientes
+            <div class="col-md-4">
+                <a href="clientes.html" class="text-decoration-none text-dark">
+                    <div class="card text-center h-100">
+                        <div class="card-body">
+                            <h5>Clientes</h5>
+                            <p class="display-6" id="totalClientes">0</p>
+                        </div>
+                    </div>
                 </a>
             </div>
 
-            <div class="col-md-4 col-lg-2">
-                <a href="empleados.html" class="btn btn-primary w-100 p-3">
-                    Empleados
+            <!-- Empleados -->
+
+            <div class="col-md-4">
+                <a href="empleados.html" class="text-decoration-none text-dark">
+                    <div class="card text-center h-100">
+                        <div class="card-body">
+                            <h5>Empleados</h5>
+                            <p class="display-6" id="totalEmpleados">0</p>
+                        </div>
+                    </div>
                 </a>
             </div>
 
-            <div class="col-md-4 col-lg-2">
-                <a href="servicios.html" class="btn btn-primary w-100 p-3">
-                    Servicios
+            <!-- Servicios -->
+
+            <div class="col-md-4">
+                <a href="servicios.html" class="text-decoration-none text-dark">
+                    <div class="card text-center h-100">
+                        <div class="card-body">
+                            <h5>Servicios</h5>
+                            <p class="display-6" id="totalServicios">0</p>
+                        </div>
+                    </div>
                 </a>
             </div>
 
-            <div class="col-md-4 col-lg-2">
-                <a href="citas.html" class="btn btn-primary w-100 p-3">
-                    Citas
+            <!-- Citas -->
+
+            <div class="col-md-4">
+                <a href="citas.html" class="text-decoration-none text-dark">
+                    <div class="card text-center h-100">
+                        <div class="card-body">
+                            <h5>Citas</h5>
+                            <p class="display-6" id="totalCitas">0</p>
+                        </div>
+                    </div>
                 </a>
             </div>
 
-            <div class="col-md-4 col-lg-2">
-                <a href="productos.html" class="btn btn-primary w-100 p-3">
-                    Productos
+            <!-- Productos -->
+
+            <div class="col-md-4">
+                <a href="productos.html" class="text-decoration-none text-dark">
+                    <div class="card text-center h-100">
+                        <div class="card-body">
+                            <h5>Productos</h5>
+                            <p class="display-6" id="totalProductos">0</p>
+                        </div>
+                    </div>
                 </a>
             </div>
 
-            <div class="col-md-4 col-lg-2">
-                <a href="promociones.html" class="btn btn-primary w-100 p-3">
-                    Promociones
+            <!-- Promociones -->
+
+            <div class="col-md-4">
+                <a href="promociones.html" class="text-decoration-none text-dark">
+                    <div class="card text-center h-100">
+                        <div class="card-body">
+                            <h5>Promociones</h5>
+                            <p class="display-6" id="totalPromociones">0</p>
+                        </div>
+                    </div>
                 </a>
             </div>
 
         </div>
 
-    </div>
+    </section>
+
+
 
 </main>
 
