@@ -6,9 +6,16 @@ const API_SERVICIOS = "http://localhost:8080/servicios";
 const formularioCita = document.getElementById("formularioCita");
 const tablaCitas = document.getElementById("tablaCitas");
 
+const inputFechaHora = document.getElementById("fechaHora");
+const selectEstado = document.getElementById("estado");
 const selectCliente = document.getElementById("clienteId");
 const selectEmpleado = document.getElementById("empleadoId");
 const selectServicio = document.getElementById("servicioId");
+
+const botonGuardarCita = document.getElementById("botonGuardarCita");
+const botonCancelarEdicion = document.getElementById("botonCancelarEdicion");
+
+let citaEditandoId = null;
 
 document.addEventListener("DOMContentLoaded", function () {
     cargarClientes();
@@ -19,8 +26,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
 formularioCita.addEventListener("submit", function (event) {
     event.preventDefault();
-    crearCita();
+
+    if (citaEditandoId === null) {
+        crearCita();
+    } else {
+        actualizarCita();
+    }
 });
+
+botonCancelarEdicion.addEventListener("click", cancelarEdicion);
 
 function cargarClientes() {
     fetch(API_CLIENTES)
@@ -28,10 +42,8 @@ function cargarClientes() {
         .then(clientes => {
             clientes.forEach(cliente => {
                 const option = document.createElement("option");
-
                 option.value = cliente.id;
                 option.textContent = `${cliente.nombre} - ${cliente.telefono}`;
-
                 selectCliente.appendChild(option);
             });
         })
@@ -46,10 +58,8 @@ function cargarEmpleados() {
         .then(empleados => {
             empleados.forEach(empleado => {
                 const option = document.createElement("option");
-
                 option.value = empleado.id;
                 option.textContent = `${empleado.nombre} - ${empleado.cargo}`;
-
                 selectEmpleado.appendChild(option);
             });
         })
@@ -64,10 +74,8 @@ function cargarServicios() {
         .then(servicios => {
             servicios.forEach(servicio => {
                 const option = document.createElement("option");
-
                 option.value = servicio.id;
                 option.textContent = `${servicio.nombre} - ${servicio.precio} €`;
-
                 selectServicio.appendChild(option);
             });
         })
@@ -92,6 +100,17 @@ function cargarCitas() {
                     <td>${cita.cliente ? cita.cliente.nombre : ""}</td>
                     <td>${cita.empleado ? cita.empleado.nombre : ""}</td>
                     <td>${cita.servicio ? cita.servicio.nombre : ""}</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm me-2"
+                                onclick="prepararEdicionCita(${cita.id}, '${cita.fechaHora}', '${cita.estado}', ${cita.cliente ? cita.cliente.id : null}, ${cita.empleado ? cita.empleado.id : null}, ${cita.servicio ? cita.servicio.id : null})">
+                            Editar
+                        </button>
+
+                        <button class="btn btn-danger btn-sm"
+                                onclick="eliminarCita(${cita.id})">
+                            Eliminar
+                        </button>
+                    </td>
                 `;
 
                 tablaCitas.appendChild(fila);
@@ -103,19 +122,7 @@ function cargarCitas() {
 }
 
 function crearCita() {
-    const fechaHora = document.getElementById("fechaHora").value;
-    const estado = document.getElementById("estado").value;
-    const clienteId = Number(selectCliente.value);
-    const empleadoId = Number(selectEmpleado.value);
-    const servicioId = Number(selectServicio.value);
-
-    const nuevaCita = {
-        fechaHora: fechaHora,
-        estado: estado,
-        clienteId: clienteId,
-        empleadoId: empleadoId,
-        servicioId: servicioId
-    };
+    const nuevaCita = obtenerDatosFormulario();
 
     fetch(API_CITAS, {
         method: "POST",
@@ -132,6 +139,82 @@ function crearCita() {
         .catch(error => {
             console.error("Error al crear cita:", error);
         });
+}
+
+function prepararEdicionCita(id, fechaHora, estado, clienteId, empleadoId, servicioId) {
+    citaEditandoId = id;
+
+    inputFechaHora.value = fechaHora;
+    selectEstado.value = estado;
+    selectCliente.value = clienteId;
+    selectEmpleado.value = empleadoId;
+    selectServicio.value = servicioId;
+
+    botonGuardarCita.textContent = "Guardar cambios";
+    botonGuardarCita.classList.remove("btn-primary");
+    botonGuardarCita.classList.add("btn-success");
+
+    botonCancelarEdicion.classList.remove("d-none");
+}
+
+function actualizarCita() {
+    const citaActualizada = obtenerDatosFormulario();
+
+    fetch(`${API_CITAS}/${citaEditandoId}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(citaActualizada)
+    })
+        .then(response => response.json())
+        .then(() => {
+            cancelarEdicion();
+            cargarCitas();
+        })
+        .catch(error => {
+            console.error("Error al actualizar cita:", error);
+        });
+}
+
+function eliminarCita(id) {
+    const confirmar = confirm("¿Seguro que quieres eliminar esta cita?");
+
+    if (!confirmar) {
+        return;
+    }
+
+    fetch(`${API_CITAS}/${id}`, {
+        method: "DELETE"
+    })
+        .then(() => {
+            cargarCitas();
+        })
+        .catch(error => {
+            console.error("Error al eliminar cita:", error);
+        });
+}
+
+function cancelarEdicion() {
+    citaEditandoId = null;
+
+    formularioCita.reset();
+
+    botonGuardarCita.textContent = "Crear cita";
+    botonGuardarCita.classList.remove("btn-success");
+    botonGuardarCita.classList.add("btn-primary");
+
+    botonCancelarEdicion.classList.add("d-none");
+}
+
+function obtenerDatosFormulario() {
+    return {
+        fechaHora: inputFechaHora.value,
+        estado: selectEstado.value,
+        clienteId: Number(selectCliente.value),
+        empleadoId: Number(selectEmpleado.value),
+        servicioId: Number(selectServicio.value)
+    };
 }
 
 function formatearFecha(fechaHora) {

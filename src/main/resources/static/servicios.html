@@ -58,7 +58,13 @@
                     <input type="number" class="form-control" id="duracion" required>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Crear servicio</button>
+                <button type="submit" class="btn btn-primary" id="botonGuardarServicio">
+                    Crear servicio
+                </button>
+
+                <button type="button" class="btn btn-secondary d-none" id="botonCancelarEdicion">
+                    Cancelar edición
+                </button>
 
             </form>
         </div>
@@ -75,6 +81,7 @@
                     <th>Nombre</th>
                     <th>Precio</th>
                     <th>Duración</th>
+                    <th>Acciones</th>
                 </tr>
                 </thead>
 
