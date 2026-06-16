@@ -43,11 +43,12 @@ function cargarClientes() {
                     <td>${cliente.telefono}</td>
                     <td>${cliente.email}</td>
                     <td>
-                        <button class="btn btn-warning btn-sm me-2" onclick="prepararEdicionCliente(${cliente.id}, '${cliente.nombre}', '${cliente.telefono}', '${cliente.email}')">
+                        <button class="btn btn-editar"
+                        onclick="prepararEdicionCliente(${cliente.id}, '${cliente.nombre}', '${cliente.telefono}', '${cliente.email}')">
                             Editar
                         </button>
 
-                        <button class="btn btn-danger btn-sm" onclick="eliminarCliente(${cliente.id})">
+                       <button class="btn btn-eliminar" onclick="eliminarCliente(${cliente.id})">
                             Eliminar
                         </button>
                     </td>

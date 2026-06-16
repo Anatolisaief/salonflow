@@ -184,6 +184,80 @@ a .card:hover {
     font-weight: 700;
 }
 
+.btn-filtro {
+    background: linear-gradient(
+        135deg,
+        var(--color-principal),
+        var(--color-secundario)
+    );
+    color: white;
+    border: none;
+    border-radius: 18px;
+    font-weight: 700;
+    padding: 10px 22px;
+    box-shadow: 0 6px 16px rgba(255,138,118,0.25);
+   transition: all 0.25s ease;
+}
+
+.btn-filtro:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(255,138,118,0.35);
+}
+
+.btn-mostrar {
+    background: linear-gradient(
+        135deg,
+        #B7E778,
+        var(--color-verde)
+    );
+    color: #2f2f2f;
+    border: none;
+    border-radius: 18px;
+    font-weight: 700;
+    padding: 10px 22px;
+    transition: all 0.25s ease;
+}
+
+.btn-mostrar:hover {
+    transform: translateY(-2px);
+}
+
+.btn-editar {
+    background: linear-gradient(
+        135deg,
+        var(--color-secundario),
+        var(--color-principal)
+    );
+    color: white;
+    border: none;
+    border-radius: 999px;
+    font-weight: 700;
+    padding: 8px 18px;
+    transition: all 0.25s ease;
+}
+
+.btn-editar:hover {
+    transform: scale(1.05);
+}
+
+.btn-eliminar {
+    background: linear-gradient(
+        135deg,
+        #FF5E78,
+        #FF3D57
+    );
+    color: white;
+    border: none;
+    border-radius: 999px;
+    font-weight: 700;
+    padding: 8px 18px;
+    transition: all 0.25s ease;
+}
+
+.btn-eliminar:hover {
+    transform: scale(1.05);
+}
+
 /* Formularios */
 
 .form-control,

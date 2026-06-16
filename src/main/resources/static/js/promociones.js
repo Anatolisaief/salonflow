@@ -83,12 +83,12 @@ function mostrarPromociones(promociones) {
             <td>${promocion.descuento}%</td>
             <td>${nombresServicios}</td>
             <td>
-                <button class="btn btn-warning btn-sm me-2"
+                <button class="btn btn-editar"
                         onclick="prepararEdicionPromocion(${promocion.id}, '${promocion.nombre}', '${promocion.descripcion}', '${promocion.fechaInicio}', '${promocion.fechaFin}', ${promocion.descuento}, '${serviciosIds}')">
                     Editar
                 </button>
 
-                <button class="btn btn-danger btn-sm"
+                <button class="btn btn-eliminar"
                         onclick="eliminarPromocion(${promocion.id})">
                     Eliminar
                 </button>

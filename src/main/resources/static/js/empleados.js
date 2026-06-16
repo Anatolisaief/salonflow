@@ -43,12 +43,12 @@ function cargarEmpleados() {
                     <td>${empleado.cargo}</td>
                     <td>${empleado.horario}</td>
                     <td>
-                        <button class="btn btn-warning btn-sm me-2"
+                        <button class="btn btn-editar"
                                 onclick="prepararEdicionEmpleado(${empleado.id}, '${empleado.nombre}', '${empleado.cargo}', '${empleado.horario}')">
                             Editar
                         </button>
 
-                        <button class="btn btn-danger btn-sm"
+                       <button class="btn btn-eliminar"
                                 onclick="eliminarEmpleado(${empleado.id})">
                             Eliminar
                         </button>

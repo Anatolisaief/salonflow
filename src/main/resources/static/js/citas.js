@@ -101,12 +101,12 @@ function cargarCitas() {
                     <td>${cita.empleado ? cita.empleado.nombre : ""}</td>
                     <td>${cita.servicio ? cita.servicio.nombre : ""}</td>
                     <td>
-                        <button class="btn btn-warning btn-sm me-2"
+                        <button class="btn btn-editar"
                                 onclick="prepararEdicionCita(${cita.id}, '${cita.fechaHora}', '${cita.estado}', ${cita.cliente ? cita.cliente.id : null}, ${cita.empleado ? cita.empleado.id : null}, ${cita.servicio ? cita.servicio.id : null})">
                             Editar
                         </button>
 
-                        <button class="btn btn-danger btn-sm"
+                       <button class="btn btn-eliminar"
                                 onclick="eliminarCita(${cita.id})">
                             Eliminar
                         </button>

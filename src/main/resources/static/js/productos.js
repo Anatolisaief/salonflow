@@ -105,12 +105,12 @@ function mostrarProductos(productos) {
             <td>${producto.precio}</td>
             <td>${producto.stock}</td>
             <td>
-                <button class="btn btn-warning btn-sm me-2"
+                <button class="btn btn-editar"
                         onclick="prepararEdicionProducto(${producto.id}, '${producto.nombre}', '${producto.marca}', ${producto.precio}, ${producto.stock})">
                     Editar
                 </button>
 
-                <button class="btn btn-danger btn-sm"
+                <button class="btn btn-eliminar"
                         onclick="eliminarProducto(${producto.id})">
                     Eliminar
                 </button>

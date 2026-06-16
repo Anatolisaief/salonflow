@@ -41,12 +41,12 @@ function cargarServicios() {
                     <td>${servicio.precio} €</td>
                     <td>${servicio.duracion} min</td>
                     <td>
-                        <button class="btn btn-warning btn-sm me-2"
+                        <button class="btn btn-editar"
                                 onclick="prepararEdicionServicio(${servicio.id}, '${servicio.nombre}', ${servicio.precio}, ${servicio.duracion})">
                             Editar
                         </button>
 
-                        <button class="btn btn-danger btn-sm"
+                       <button class="btn btn-eliminar"
                                 onclick="eliminarServicio(${servicio.id})">
                             Eliminar
                         </button>
