@@ -103,24 +103,28 @@
         <div class="card-header">Buscar productos</div>
 
         <div class="card-body">
-            <div class="row g-3">
+            <div class="row g-3 align-items-end">
 
-                <div class="col-md-6">
-                    <label for="buscarNombre" class="form-label">Buscar por nombre</label>
-                    <input type="text" class="form-control" id="buscarNombre" placeholder="Ej: champu">
+                <div class="col-md-3">
+                    <label for="tipoBusqueda" class="form-label">Buscar por</label>
+                    <select class="form-select" id="tipoBusqueda">
+                        <option value="nombre">Nombre</option>
+                        <option value="marca">Marca</option>
+                        <option value="id">ID</option>
+                    </select>
                 </div>
 
                 <div class="col-md-6">
-                    <label for="buscarMarca" class="form-label">Buscar por marca</label>
-                    <input type="text" class="form-control" id="buscarMarca" placeholder="Ej: L'Oreal">
+                    <label for="textoBusqueda" class="form-label">Valor de búsqueda</label>
+                    <input type="text" class="form-control" id="textoBusqueda" placeholder="Ej: champú, L'Oréal o 1">
                 </div>
 
-                <div class="col-12">
-                    <button class="btn btn-filtro">
-                        Buscar por nombre
+                <div class="col-md-3">
+                    <button class="btn btn-filtro w-100 mb-2" id="botonBuscarProducto">
+                        Buscar
                     </button>
-                    <button class="btn btn-secondary" id="botonBuscarMarca">Buscar por marca</button>
-                    <button class="btn btn-mostrar">
+
+                    <button class="btn btn-mostrar w-100" id="botonMostrarTodos">
                         Mostrar todos
                     </button>
                 </div>

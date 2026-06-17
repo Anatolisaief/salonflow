@@ -8,11 +8,9 @@ const inputMarca = document.getElementById("marca");
 const inputPrecio = document.getElementById("precio");
 const inputStock = document.getElementById("stock");
 
-const buscarNombre = document.getElementById("buscarNombre");
-const buscarMarca = document.getElementById("buscarMarca");
-
-const botonBuscarNombre = document.getElementById("botonBuscarNombre");
-const botonBuscarMarca = document.getElementById("botonBuscarMarca");
+const tipoBusqueda = document.getElementById("tipoBusqueda");
+const textoBusqueda = document.getElementById("textoBusqueda");
+const botonBuscarProducto = document.getElementById("botonBuscarProducto");
 const botonMostrarTodos = document.getElementById("botonMostrarTodos");
 
 const botonGuardarProducto = document.getElementById("botonGuardarProducto");
@@ -34,25 +32,12 @@ formularioProducto.addEventListener("submit", function (event) {
 
 botonCancelarEdicion.addEventListener("click", cancelarEdicion);
 
-botonBuscarNombre.addEventListener("click", function () {
-    const nombre = buscarNombre.value.trim();
-
-    if (nombre !== "") {
-        buscarProductosPorNombre(nombre);
-    }
-});
-
-botonBuscarMarca.addEventListener("click", function () {
-    const marca = buscarMarca.value.trim();
-
-    if (marca !== "") {
-        buscarProductosPorMarca(marca);
-    }
+botonBuscarProducto.addEventListener("click", function () {
+    buscarProducto();
 });
 
 botonMostrarTodos.addEventListener("click", function () {
-    buscarNombre.value = "";
-    buscarMarca.value = "";
+    textoBusqueda.value = "";
     cargarProductos();
 });
 
@@ -95,6 +80,8 @@ function crearProducto() {
 function mostrarProductos(productos) {
     tablaProductos.innerHTML = "";
 
+    productos.sort((a, b) => a.id - b.id);
+
     productos.forEach(producto => {
         const fila = document.createElement("tr");
 
@@ -106,7 +93,7 @@ function mostrarProductos(productos) {
             <td>${producto.stock}</td>
             <td>
                 <button class="btn btn-editar"
-                        onclick="prepararEdicionProducto(${producto.id}, '${producto.nombre}', '${producto.marca}', ${producto.precio}, ${producto.stock})">
+                        onclick="prepararEdicionProducto(${producto.id})">
                     Editar
                 </button>
 
@@ -121,19 +108,31 @@ function mostrarProductos(productos) {
     });
 }
 
-function prepararEdicionProducto(id, nombre, marca, precio, stock) {
-    productoEditandoId = id;
+function prepararEdicionProducto(id) {
+    fetch(`${API_PRODUCTOS}/${id}`)
+        .then(response => response.json())
+        .then(producto => {
+            productoEditandoId = producto.id;
 
-    inputNombre.value = nombre;
-    inputMarca.value = marca;
-    inputPrecio.value = precio;
-    inputStock.value = stock;
+            inputNombre.value = producto.nombre;
+            inputMarca.value = producto.marca;
+            inputPrecio.value = producto.precio;
+            inputStock.value = producto.stock;
 
-    botonGuardarProducto.textContent = "Guardar cambios";
-    botonGuardarProducto.classList.remove("btn-primary");
-    botonGuardarProducto.classList.add("btn-success");
+            botonGuardarProducto.textContent = "Guardar cambios";
+            botonGuardarProducto.classList.remove("btn-primary");
+            botonGuardarProducto.classList.add("btn-success");
 
-    botonCancelarEdicion.classList.remove("d-none");
+            botonCancelarEdicion.classList.remove("d-none");
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        })
+        .catch(error => {
+            console.error("Error al preparar edición:", error);
+        });
 }
 
 function actualizarProducto() {
@@ -192,7 +191,9 @@ function cancelarEdicion() {
 }
 
 function buscarProductosPorNombre(nombre) {
-    fetch(`${API_PRODUCTOS}/nombre/${nombre}`)
+    const nombreCodificado = encodeURIComponent(nombre);
+
+    fetch(`${API_PRODUCTOS}/nombre/${nombreCodificado}`)
         .then(response => response.json())
         .then(productos => {
             mostrarProductos(productos);
@@ -203,12 +204,52 @@ function buscarProductosPorNombre(nombre) {
 }
 
 function buscarProductosPorMarca(marca) {
-    fetch(`${API_PRODUCTOS}/marca/${marca}`)
+    const marcaCodificada = encodeURIComponent(marca);
+
+    fetch(`${API_PRODUCTOS}/marca/${marcaCodificada}`)
         .then(response => response.json())
         .then(productos => {
             mostrarProductos(productos);
         })
         .catch(error => {
             console.error("Error al buscar productos por marca:", error);
+        });
+}
+
+function buscarProducto() {
+    const tipo = tipoBusqueda.value;
+    const valor = textoBusqueda.value.trim();
+
+    if (valor === "") {
+        cargarProductos();
+        return;
+    }
+
+    if (tipo === "nombre") {
+        buscarProductosPorNombre(valor);
+    }
+
+    if (tipo === "marca") {
+        buscarProductosPorMarca(valor);
+    }
+
+    if (tipo === "id") {
+        buscarProductoPorId(valor);
+    }
+}
+
+function buscarProductoPorId(id) {
+    fetch(`${API_PRODUCTOS}/${id}`)
+        .then(response => response.json())
+        .then(producto => {
+            if (producto === null || producto.id === undefined) {
+                mostrarProductos([]);
+            } else {
+                mostrarProductos([producto]);
+            }
+        })
+        .catch(error => {
+            console.error("Error al buscar producto por ID:", error);
+            mostrarProductos([]);
         });
 }
