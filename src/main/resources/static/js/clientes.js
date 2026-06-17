@@ -7,6 +7,11 @@ const inputNombre = document.getElementById("nombre");
 const inputTelefono = document.getElementById("telefono");
 const inputEmail = document.getElementById("email");
 
+const tipoBusqueda = document.getElementById("tipoBusqueda");
+const textoBusqueda = document.getElementById("textoBusqueda");
+const botonBuscarCliente = document.getElementById("botonBuscarCliente");
+const botonMostrarTodos = document.getElementById("botonMostrarTodos");
+
 const botonGuardarCliente = document.getElementById("botonGuardarCliente");
 const botonCancelarEdicion = document.getElementById("botonCancelarEdicion");
 
@@ -24,38 +29,20 @@ formularioCliente.addEventListener("submit", function (event) {
     }
 });
 
-botonCancelarEdicion.addEventListener("click", function () {
-    cancelarEdicion();
+botonCancelarEdicion.addEventListener("click", cancelarEdicion);
+
+botonBuscarCliente.addEventListener("click", buscarClientes);
+
+botonMostrarTodos.addEventListener("click", function () {
+    textoBusqueda.value = "";
+    cargarClientes();
 });
 
 function cargarClientes() {
     fetch(API_CLIENTES)
         .then(response => response.json())
         .then(clientes => {
-            tablaClientes.innerHTML = "";
-
-            clientes.forEach(cliente => {
-                const fila = document.createElement("tr");
-
-                fila.innerHTML = `
-                    <td>${cliente.id}</td>
-                    <td>${cliente.nombre}</td>
-                    <td>${cliente.telefono}</td>
-                    <td>${cliente.email}</td>
-                    <td>
-                        <button class="btn btn-editar"
-                        onclick="prepararEdicionCliente(${cliente.id}, '${cliente.nombre}', '${cliente.telefono}', '${cliente.email}')">
-                            Editar
-                        </button>
-
-                       <button class="btn btn-eliminar" onclick="eliminarCliente(${cliente.id})">
-                            Eliminar
-                        </button>
-                    </td>
-                `;
-
-                tablaClientes.appendChild(fila);
-            });
+            mostrarClientes(clientes);
         })
         .catch(error => {
             console.error("Error al cargar clientes:", error);
@@ -86,18 +73,60 @@ function crearCliente() {
         });
 }
 
-function prepararEdicionCliente(id, nombre, telefono, email) {
-    clienteEditandoId = id;
+function mostrarClientes(clientes) {
+    tablaClientes.innerHTML = "";
 
-    inputNombre.value = nombre;
-    inputTelefono.value = telefono;
-    inputEmail.value = email;
+    clientes.sort((a, b) => a.id - b.id);
 
-    botonGuardarCliente.textContent = "Guardar cambios";
-    botonGuardarCliente.classList.remove("btn-primary");
-    botonGuardarCliente.classList.add("btn-success");
+    clientes.forEach(cliente => {
+        const fila = document.createElement("tr");
 
-    botonCancelarEdicion.classList.remove("d-none");
+        fila.innerHTML = `
+            <td>${cliente.id}</td>
+            <td>${cliente.nombre}</td>
+            <td>${cliente.telefono}</td>
+            <td>${cliente.email}</td>
+            <td>
+                <button class="btn btn-editar"
+                        onclick="prepararEdicionCliente(${cliente.id})">
+                    Editar
+                </button>
+
+                <button class="btn btn-eliminar"
+                        onclick="eliminarCliente(${cliente.id})">
+                    Eliminar
+                </button>
+            </td>
+        `;
+
+        tablaClientes.appendChild(fila);
+    });
+}
+
+function prepararEdicionCliente(id) {
+    fetch(`${API_CLIENTES}/${id}`)
+        .then(response => response.json())
+        .then(cliente => {
+            clienteEditandoId = cliente.id;
+
+            inputNombre.value = cliente.nombre;
+            inputTelefono.value = cliente.telefono;
+            inputEmail.value = cliente.email;
+
+            botonGuardarCliente.textContent = "Guardar cambios";
+            botonGuardarCliente.classList.remove("btn-primary");
+            botonGuardarCliente.classList.add("btn-success");
+
+            botonCancelarEdicion.classList.remove("d-none");
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        })
+        .catch(error => {
+            console.error("Error al preparar edición:", error);
+        });
 }
 
 function actualizarCliente() {
@@ -152,4 +181,43 @@ function cancelarEdicion() {
     botonGuardarCliente.classList.add("btn-primary");
 
     botonCancelarEdicion.classList.add("d-none");
+}
+
+function buscarClientes() {
+    const tipo = tipoBusqueda.value;
+    const valor = textoBusqueda.value.trim().toLowerCase();
+
+    if (valor === "") {
+        cargarClientes();
+        return;
+    }
+
+    fetch(API_CLIENTES)
+        .then(response => response.json())
+        .then(clientes => {
+            const clientesFiltrados = clientes.filter(cliente => {
+                if (tipo === "id") {
+                    return String(cliente.id) === valor;
+                }
+
+                if (tipo === "nombre") {
+                    return cliente.nombre.toLowerCase().includes(valor);
+                }
+
+                if (tipo === "telefono") {
+                    return cliente.telefono.toLowerCase().includes(valor);
+                }
+
+                if (tipo === "email") {
+                    return cliente.email.toLowerCase().includes(valor);
+                }
+
+                return false;
+            });
+
+            mostrarClientes(clientesFiltrados);
+        })
+        .catch(error => {
+            console.error("Error al buscar clientes:", error);
+        });
 }
