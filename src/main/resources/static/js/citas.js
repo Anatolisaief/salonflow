@@ -12,6 +12,11 @@ const selectCliente = document.getElementById("clienteId");
 const selectEmpleado = document.getElementById("empleadoId");
 const selectServicio = document.getElementById("servicioId");
 
+const tipoBusqueda = document.getElementById("tipoBusqueda");
+const textoBusqueda = document.getElementById("textoBusqueda");
+const botonBuscarCita = document.getElementById("botonBuscarCita");
+const botonMostrarTodas = document.getElementById("botonMostrarTodas");
+
 const botonGuardarCita = document.getElementById("botonGuardarCita");
 const botonCancelarEdicion = document.getElementById("botonCancelarEdicion");
 
@@ -35,6 +40,13 @@ formularioCita.addEventListener("submit", function (event) {
 });
 
 botonCancelarEdicion.addEventListener("click", cancelarEdicion);
+
+botonBuscarCita.addEventListener("click", buscarCitas);
+
+botonMostrarTodas.addEventListener("click", function () {
+    textoBusqueda.value = "";
+    cargarCitas();
+});
 
 function cargarClientes() {
     fetch(API_CLIENTES)
@@ -88,37 +100,43 @@ function cargarCitas() {
     fetch(API_CITAS)
         .then(response => response.json())
         .then(citas => {
-            tablaCitas.innerHTML = "";
-
-            citas.forEach(cita => {
-                const fila = document.createElement("tr");
-
-                fila.innerHTML = `
-                    <td>${cita.id}</td>
-                    <td>${formatearFecha(cita.fechaHora)}</td>
-                    <td>${cita.estado}</td>
-                    <td>${cita.cliente ? cita.cliente.nombre : ""}</td>
-                    <td>${cita.empleado ? cita.empleado.nombre : ""}</td>
-                    <td>${cita.servicio ? cita.servicio.nombre : ""}</td>
-                    <td>
-                        <button class="btn btn-editar"
-                                onclick="prepararEdicionCita(${cita.id}, '${cita.fechaHora}', '${cita.estado}', ${cita.cliente ? cita.cliente.id : null}, ${cita.empleado ? cita.empleado.id : null}, ${cita.servicio ? cita.servicio.id : null})">
-                            Editar
-                        </button>
-
-                       <button class="btn btn-eliminar"
-                                onclick="eliminarCita(${cita.id})">
-                            Eliminar
-                        </button>
-                    </td>
-                `;
-
-                tablaCitas.appendChild(fila);
-            });
+            mostrarCitas(citas);
         })
         .catch(error => {
             console.error("Error al cargar citas:", error);
         });
+}
+
+function mostrarCitas(citas) {
+    tablaCitas.innerHTML = "";
+
+    citas.sort((a, b) => a.id - b.id);
+
+    citas.forEach(cita => {
+        const fila = document.createElement("tr");
+
+        fila.innerHTML = `
+            <td>${cita.id}</td>
+            <td>${formatearFecha(cita.fechaHora)}</td>
+            <td>${cita.estado}</td>
+            <td>${cita.cliente ? cita.cliente.nombre : ""}</td>
+            <td>${cita.empleado ? cita.empleado.nombre : ""}</td>
+            <td>${cita.servicio ? cita.servicio.nombre : ""}</td>
+            <td>
+                <button class="btn btn-editar"
+                        onclick="prepararEdicionCita(${cita.id})">
+                    Editar
+                </button>
+
+                <button class="btn btn-eliminar"
+                        onclick="eliminarCita(${cita.id})">
+                    Eliminar
+                </button>
+            </td>
+        `;
+
+        tablaCitas.appendChild(fila);
+    });
 }
 
 function crearCita() {
@@ -141,20 +159,32 @@ function crearCita() {
         });
 }
 
-function prepararEdicionCita(id, fechaHora, estado, clienteId, empleadoId, servicioId) {
-    citaEditandoId = id;
+function prepararEdicionCita(id) {
+    fetch(`${API_CITAS}/${id}`)
+        .then(response => response.json())
+        .then(cita => {
+            citaEditandoId = cita.id;
 
-    inputFechaHora.value = fechaHora;
-    selectEstado.value = estado;
-    selectCliente.value = clienteId;
-    selectEmpleado.value = empleadoId;
-    selectServicio.value = servicioId;
+            inputFechaHora.value = cita.fechaHora;
+            selectEstado.value = cita.estado;
+            selectCliente.value = cita.cliente ? cita.cliente.id : "";
+            selectEmpleado.value = cita.empleado ? cita.empleado.id : "";
+            selectServicio.value = cita.servicio ? cita.servicio.id : "";
 
-    botonGuardarCita.textContent = "Guardar cambios";
-    botonGuardarCita.classList.remove("btn-primary");
-    botonGuardarCita.classList.add("btn-success");
+            botonGuardarCita.textContent = "Guardar cambios";
+            botonGuardarCita.classList.remove("btn-primary");
+            botonGuardarCita.classList.add("btn-success");
 
-    botonCancelarEdicion.classList.remove("d-none");
+            botonCancelarEdicion.classList.remove("d-none");
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        })
+        .catch(error => {
+            console.error("Error al preparar edición de cita:", error);
+        });
 }
 
 function actualizarCita() {
@@ -215,6 +245,47 @@ function obtenerDatosFormulario() {
         empleadoId: Number(selectEmpleado.value),
         servicioId: Number(selectServicio.value)
     };
+}
+
+function buscarCitas() {
+    const tipo = tipoBusqueda.value;
+    const valor = textoBusqueda.value.trim().toLowerCase();
+
+    if (valor === "") {
+        cargarCitas();
+        return;
+    }
+
+    fetch(API_CITAS)
+        .then(response => response.json())
+        .then(citas => {
+            const citasFiltradas = citas.filter(cita => {
+                if (tipo === "id") {
+                    return String(cita.id) === valor;
+                }
+
+                if (tipo === "estado") {
+                    return cita.estado.toLowerCase().includes(valor);
+                }
+
+                if (tipo === "cliente") {
+                    return cita.cliente &&
+                        cita.cliente.nombre.toLowerCase().includes(valor);
+                }
+
+                if (tipo === "empleado") {
+                    return cita.empleado &&
+                        cita.empleado.nombre.toLowerCase().includes(valor);
+                }
+
+                return false;
+            });
+
+            mostrarCitas(citasFiltradas);
+        })
+        .catch(error => {
+            console.error("Error al buscar citas:", error);
+        });
 }
 
 function formatearFecha(fechaHora) {
