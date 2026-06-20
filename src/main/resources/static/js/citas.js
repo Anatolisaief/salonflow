@@ -140,6 +140,9 @@ function mostrarCitas(citas) {
 }
 
 function crearCita() {
+    if (!validarCita()) {
+        return;
+    }
     const nuevaCita = obtenerDatosFormulario();
 
     fetch(API_CITAS, {
@@ -188,6 +191,9 @@ function prepararEdicionCita(id) {
 }
 
 function actualizarCita() {
+    if (!validarCita()) {
+        return;
+    }
     const citaActualizada = obtenerDatosFormulario();
 
     fetch(`${API_CITAS}/${citaEditandoId}`, {
@@ -299,4 +305,47 @@ function formatearFecha(fechaHora) {
         dateStyle: "short",
         timeStyle: "short"
     });
+}
+
+function validarCita() {
+    const fechaHora = inputFechaHora.value;
+    const estado = selectEstado.value;
+    const clienteId = selectCliente.value;
+    const empleadoId = selectEmpleado.value;
+    const servicioId = selectServicio.value;
+
+    if (fechaHora === "") {
+        alert("Selecciona la fecha y hora de la cita.");
+        return false;
+    }
+
+    const fechaSeleccionada = new Date(fechaHora);
+    const fechaActual = new Date();
+
+    if (fechaSeleccionada < fechaActual) {
+        alert("La cita no puede tener una fecha pasada.");
+        return false;
+    }
+
+    if (estado === "") {
+        alert("Selecciona el estado de la cita.");
+        return false;
+    }
+
+    if (clienteId === "") {
+        alert("Selecciona un cliente.");
+        return false;
+    }
+
+    if (empleadoId === "") {
+        alert("Selecciona un empleado.");
+        return false;
+    }
+
+    if (servicioId === "") {
+        alert("Selecciona un servicio.");
+        return false;
+    }
+
+    return true;
 }

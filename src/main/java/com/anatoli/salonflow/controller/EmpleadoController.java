@@ -36,7 +36,8 @@ public class EmpleadoController {
         return empleadoRepository.findById(id).map(empleado -> {
             empleado.setNombre(empleadoActualizado.getNombre());
             empleado.setCargo(empleadoActualizado.getCargo());
-            empleado.setHorario(empleadoActualizado.getHorario());
+            empleado.setHoraInicio(empleadoActualizado.getHoraInicio());
+            empleado.setHoraFin(empleadoActualizado.getHoraFin());
             return empleadoRepository.save(empleado);
         }).orElse(null);
     }

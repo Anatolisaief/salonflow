@@ -3,6 +3,7 @@ package com.anatoli.salonflow.controller;
 import com.anatoli.salonflow.model.Cliente;
 import com.anatoli.salonflow.repository.ClienteRepository;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class ClienteController {
     }
 
     @PostMapping
-    public Cliente crearCliente(@RequestBody Cliente cliente) {
+    public Cliente crearCliente(@Valid @RequestBody Cliente cliente) {
         return clienteRepository.save(cliente);
     }
 
@@ -32,7 +33,9 @@ public class ClienteController {
     }
 
     @PutMapping("/{id}")
-    public Cliente actualizarCliente(@PathVariable Long id, @RequestBody Cliente clienteActualizado) {
+    public Cliente actualizarCliente(
+            @PathVariable Long id,
+            @Valid @RequestBody Cliente clienteActualizado) {
         return clienteRepository.findById(id).map(cliente -> {
             cliente.setNombre(clienteActualizado.getNombre());
             cliente.setTelefono(clienteActualizado.getTelefono());

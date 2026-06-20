@@ -1,6 +1,10 @@
 package com.anatoli.salonflow.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "clientes")
@@ -9,8 +13,26 @@ public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "El nombre es obligatorio.")
+    @Size(min = 2, max = 50, message = "El nombre debe tener entre 2 y 50 caracteres.")
+    @Pattern(
+            regexp = "^[A-Za-zÁÉÍÓÚáéíóúÑñÜü\\s'-]+$",
+            message = "El nombre solo puede contener letras y espacios."
+    )
     private String nombre;
+
+
+    @NotBlank(message = "El teléfono es obligatorio.")
+    @Pattern(
+            regexp = "\\d{9}",
+            message = "El teléfono debe tener exactamente 9 dígitos."
+    )
     private String telefono;
+
+
+    @NotBlank(message = "El email es obligatorio.")
+    @Email(message = "El email no es válido.")
+    @Size(max = 100, message = "El email no puede superar los 100 caracteres.")
     private String email;
 
     public Cliente() {

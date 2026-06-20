@@ -53,12 +53,16 @@ function cargarProductos() {
 }
 
 function crearProducto() {
+
+    if (!validarProducto()) {
+        return;
+    }
     const nuevoProducto = {
-        nombre: inputNombre.value,
-        marca: inputMarca.value,
-        precio: Number(inputPrecio.value),
-        stock: Number(inputStock.value)
-    };
+            nombre: inputNombre.value.trim(),
+            marca: inputMarca.value.trim(),
+            precio: Number(inputPrecio.value),
+            stock: Number(inputStock.value)
+        };
 
     fetch(API_PRODUCTOS, {
         method: "POST",
@@ -136,9 +140,13 @@ function prepararEdicionProducto(id) {
 }
 
 function actualizarProducto() {
+
+    if (!validarProducto()) {
+        return;
+    }
     const productoActualizado = {
-        nombre: inputNombre.value,
-        marca: inputMarca.value,
+        nombre: inputNombre.value.trim(),
+        marca: inputMarca.value.trim(),
         precio: Number(inputPrecio.value),
         stock: Number(inputStock.value)
     };
@@ -252,4 +260,53 @@ function buscarProductoPorId(id) {
             console.error("Error al buscar producto por ID:", error);
             mostrarProductos([]);
         });
+}
+
+function validarProducto() {
+    const nombre = inputNombre.value.trim();
+    const marca = inputMarca.value.trim();
+    const precio = Number(inputPrecio.value);
+    const stock = Number(inputStock.value);
+
+    if (nombre.length < 2) {
+        alert("El nombre debe tener al menos 2 caracteres.");
+        return false;
+    }
+
+    if (nombre.length > 100) {
+        alert("El nombre no puede superar los 100 caracteres.");
+        return false;
+    }
+
+    if (marca.length < 2) {
+        alert("La marca debe tener al menos 2 caracteres.");
+        return false;
+    }
+
+    if (marca.length > 50) {
+        alert("La marca no puede superar los 50 caracteres.");
+        return false;
+    }
+
+    if (Number.isNaN(precio) || precio <= 0) {
+        alert("El precio debe ser mayor que 0.");
+        return false;
+    }
+
+    if (precio > 9999) {
+        alert("El precio no puede superar 9999.");
+        return false;
+    }
+
+    if (!Number.isInteger(stock) || stock < 0) {
+        alert("El stock debe ser un número entero igual o mayor que 0.");
+        return false;
+    }
+
+    if (stock > 10000) {
+        alert("El stock no puede superar 10000 unidades.");
+        return false;
+    }
+
+    return true;
 }

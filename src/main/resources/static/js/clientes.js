@@ -50,6 +50,10 @@ function cargarClientes() {
 }
 
 function crearCliente() {
+
+    if (!validarCliente()) {
+        return;
+    }
     const nuevoCliente = {
         nombre: inputNombre.value,
         telefono: inputTelefono.value,
@@ -130,6 +134,10 @@ function prepararEdicionCliente(id) {
 }
 
 function actualizarCliente() {
+
+    if (!validarCliente()) {
+        return;
+    }
     const clienteActualizado = {
         nombre: inputNombre.value,
         telefono: inputTelefono.value,
@@ -220,4 +228,45 @@ function buscarClientes() {
         .catch(error => {
             console.error("Error al buscar clientes:", error);
         });
+}
+
+
+function validarCliente() {
+
+    const nombre = inputNombre.value.trim();
+    const telefono = inputTelefono.value.trim();
+    const email = inputEmail.value.trim();
+
+    if (nombre.length < 2) {
+        alert("El nombre debe tener al menos 2 caracteres.");
+        return false;
+    }
+
+    if (nombre.length > 50) {
+        alert("El nombre no puede superar los 50 caracteres.");
+        return false;
+    }
+
+    if (!/^[A-Za-zÁÉÍÓÚáéíóúÑñÜü\s'-]+$/.test(nombre)) {
+        alert("El nombre solo puede contener letras, espacios, guiones y apóstrofes.");
+        return false;
+    }
+
+    if (!/^[0-9]{9}$/.test(telefono)) {
+        alert("El teléfono debe tener exactamente 9 números.");
+        return false;
+    }
+
+    if (email.length > 100) {
+        alert("El email no puede superar los 100 caracteres.");
+        return false;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        alert("Introduce un email válido.");
+        return false;
+    }
+
+    return true;
+
 }

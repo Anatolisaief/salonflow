@@ -45,8 +45,13 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="horario" class="form-label">Horario</label>
-                    <input type="text" class="form-control" id="horario" required>
+                    <label for="horaInicio" class="form-label">Hora inicio</label>
+                    <input type="time" class="form-control" id="horaInicio" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="horaFin" class="form-label">Hora fin</label>
+                    <input type="time" class="form-control" id="horaFin" required>
                 </div>
 
                 <button type="submit" class="btn btn-primary" id="botonGuardarEmpleado">
@@ -91,6 +96,7 @@
 <script src="js/layout.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/utils.js"></script>
 <script src="js/empleados.js"></script>
 
 </body>

@@ -41,6 +41,9 @@ function cargarPromociones() {
 }
 
 function crearPromocion() {
+    if (!validarPromocion()) {
+        return;
+    }
     const nuevaPromocion = obtenerDatosFormulario();
 
     fetch(API_PROMOCIONES, {
@@ -117,6 +120,9 @@ function prepararEdicionPromocion(id, nombre, descripcion, fechaInicio, fechaFin
 }
 
 function actualizarPromocion() {
+    if (!validarPromocion()) {
+        return;
+    }
     const promocionActualizada = obtenerDatosFormulario();
 
     fetch(`${API_PROMOCIONES}/${promocionEditandoId}`, {
@@ -180,4 +186,63 @@ function obtenerDatosFormulario() {
         descuento: Number(inputDescuento.value),
         serviciosIds: serviciosIds
     };
+}
+
+function validarPromocion() {
+    const nombre = inputNombre.value.trim();
+    const descripcion = inputDescripcion.value.trim();
+    const fechaInicio = inputFechaInicio.value;
+    const fechaFin = inputFechaFin.value;
+    const descuento = Number(inputDescuento.value);
+    const serviciosIds = inputServiciosIds.value
+        .split(",")
+        .map(id => Number(id.trim()))
+        .filter(id => !isNaN(id));
+
+    if (nombre.length < 2) {
+        alert("El nombre debe tener al menos 2 caracteres.");
+        return false;
+    }
+
+    if (nombre.length > 100) {
+        alert("El nombre no puede superar los 100 caracteres.");
+        return false;
+    }
+
+    if (descripcion.length < 5) {
+        alert("La descripción debe tener al menos 5 caracteres.");
+        return false;
+    }
+
+    if (descripcion.length > 255) {
+        alert("La descripción no puede superar los 255 caracteres.");
+        return false;
+    }
+
+    if (fechaInicio === "") {
+        alert("Selecciona la fecha de inicio.");
+        return false;
+    }
+
+    if (fechaFin === "") {
+        alert("Selecciona la fecha de fin.");
+        return false;
+    }
+
+    if (fechaInicio > fechaFin) {
+        alert("La fecha de inicio no puede ser posterior a la fecha de fin.");
+        return false;
+    }
+
+    if (Number.isNaN(descuento) || descuento <= 0 || descuento > 100) {
+        alert("El descuento debe estar entre 1 y 100.");
+        return false;
+    }
+
+    if (serviciosIds.length === 0) {
+        alert("Debes introducir al menos un ID de servicio válido.");
+        return false;
+    }
+
+    return true;
 }

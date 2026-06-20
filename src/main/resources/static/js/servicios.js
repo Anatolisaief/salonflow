@@ -32,6 +32,8 @@ function cargarServicios() {
         .then(servicios => {
             tablaServicios.innerHTML = "";
 
+            servicios.sort((a, b) => a.id - b.id);
+
             servicios.forEach(servicio => {
                 const fila = document.createElement("tr");
 
@@ -42,11 +44,11 @@ function cargarServicios() {
                     <td>${servicio.duracion} min</td>
                     <td>
                         <button class="btn btn-editar"
-                                onclick="prepararEdicionServicio(${servicio.id}, '${servicio.nombre}', ${servicio.precio}, ${servicio.duracion})">
+                                onclick="prepararEdicionServicio(${servicio.id})">
                             Editar
                         </button>
 
-                       <button class="btn btn-eliminar"
+                        <button class="btn btn-eliminar"
                                 onclick="eliminarServicio(${servicio.id})">
                             Eliminar
                         </button>
@@ -62,6 +64,9 @@ function cargarServicios() {
 }
 
 function crearServicio() {
+    if (!validarServicio()) {
+        return;
+    }
     const nuevoServicio = {
         nombre: inputNombre.value,
         precio: Number(inputPrecio.value),
@@ -100,6 +105,9 @@ function prepararEdicionServicio(id, nombre, precio, duracion) {
 }
 
 function actualizarServicio() {
+    if (!validarServicio()) {
+        return;
+    }
     const servicioActualizado = {
         nombre: inputNombre.value,
         precio: Number(inputPrecio.value),
@@ -151,4 +159,48 @@ function cancelarEdicion() {
     botonGuardarServicio.classList.add("btn-primary");
 
     botonCancelarEdicion.classList.add("d-none");
+}
+
+function validarServicio() {
+
+    const nombre = inputNombre.value.trim();
+    const precio = Number(inputPrecio.value);
+    const duracion = Number(inputDuracion.value);
+
+    if (nombre.length < 2) {
+        alert("El nombre debe tener al menos 2 caracteres.");
+        return false;
+    }
+
+    if (nombre.length > 100) {
+        alert("El nombre no puede superar los 100 caracteres.");
+        return false;
+    }
+
+    if (!/^[A-Za-zÁÉÍÓÚáéíóúÑñÜü0-9\s'.-]+$/.test(nombre)) {
+        alert("El nombre contiene caracteres no válidos.");
+        return false;
+    }
+
+    if (Number.isNaN(precio) || precio <= 0) {
+        alert("El precio debe ser mayor que 0.");
+        return false;
+    }
+
+    if (precio > 9999) {
+        alert("El precio no puede superar 9999 €.");
+        return false;
+    }
+
+    if (!Number.isInteger(duracion) || duracion <= 0) {
+        alert("La duración debe ser un número entero mayor que 0.");
+        return false;
+    }
+
+    if (duracion > 480) {
+        alert("La duración no puede superar 480 minutos.");
+        return false;
+    }
+
+    return true;
 }

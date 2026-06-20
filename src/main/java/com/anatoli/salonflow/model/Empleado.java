@@ -1,6 +1,8 @@
 package com.anatoli.salonflow.model;
 import jakarta.persistence.*;
 
+import java.time.LocalTime;
+
 @Entity
 @Table(name = "empleados")
 public class Empleado {
@@ -10,7 +12,10 @@ public class Empleado {
     private Long id;
     private String nombre;
     private String cargo;
-    private String horario;
+    private LocalTime horaInicio;
+    private LocalTime horaFin;
+
+
 
     public Empleado() {
     }
@@ -39,11 +44,20 @@ public class Empleado {
         this.cargo = cargo;
     }
 
-    public String getHorario() {
-        return horario;
+    public LocalTime getHoraInicio() {
+        return horaInicio;
     }
 
-    public void setHorario(String horario) {
-        this.horario = horario;
+    public void setHoraInicio(LocalTime horaInicio) {
+        this.horaInicio = horaInicio;
     }
+
+    public LocalTime getHoraFin() {
+        return horaFin;
+    }
+
+    public void setHoraFin(LocalTime horaFin) {
+        this.horaFin = horaFin;
+    }
+
 }
