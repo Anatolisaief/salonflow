@@ -46,6 +46,7 @@ public class CitaController {
 
     @PostMapping
     public Cita crearCita(@Valid @RequestBody CitaRequest request) {
+
         Cliente cliente = clienteRepository.findById(request.getClienteId())
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.BAD_REQUEST,
@@ -63,6 +64,16 @@ public class CitaController {
                         HttpStatus.BAD_REQUEST,
                         "El empleado no existe."
                 ));
+
+        if (citaRepository.existsByEmpleadoIdAndFechaHora(
+                request.getEmpleadoId(),
+                request.getFechaHora())) {
+
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "El empleado ya tiene una cita en esa fecha y hora."
+            );
+        }
 
         Cita cita = new Cita();
         cita.setFechaHora(request.getFechaHora());
@@ -102,6 +113,16 @@ public class CitaController {
                         HttpStatus.BAD_REQUEST,
                         "El empleado no existe."
                 ));
+        if (citaRepository.existsByEmpleadoIdAndFechaHoraAndIdNot(
+                request.getEmpleadoId(),
+                request.getFechaHora(),
+                id)) {
+
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "El empleado ya tiene otra cita en esa fecha y hora."
+            );
+        }
 
         return citaRepository.findById(id).map(cita -> {
             cita.setFechaHora(request.getFechaHora());

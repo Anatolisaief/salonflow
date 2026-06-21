@@ -143,6 +143,7 @@ function crearCita() {
     if (!validarCita()) {
         return;
     }
+
     const nuevaCita = obtenerDatosFormulario();
 
     fetch(API_CITAS, {
@@ -152,12 +153,19 @@ function crearCita() {
         },
         body: JSON.stringify(nuevaCita)
     })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("No se pudo crear la cita. El empleado ya puede tener una cita en esa fecha y hora.");
+            }
+
+            return response.json();
+        })
         .then(() => {
             formularioCita.reset();
             cargarCitas();
         })
         .catch(error => {
+            alert(error.message);
             console.error("Error al crear cita:", error);
         });
 }
@@ -194,6 +202,7 @@ function actualizarCita() {
     if (!validarCita()) {
         return;
     }
+
     const citaActualizada = obtenerDatosFormulario();
 
     fetch(`${API_CITAS}/${citaEditandoId}`, {
@@ -203,12 +212,19 @@ function actualizarCita() {
         },
         body: JSON.stringify(citaActualizada)
     })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("No se pudo actualizar la cita. El empleado ya puede tener otra cita en esa fecha y hora.");
+            }
+
+            return response.json();
+        })
         .then(() => {
             cancelarEdicion();
             cargarCitas();
         })
         .catch(error => {
+            alert(error.message);
             console.error("Error al actualizar cita:", error);
         });
 }
