@@ -6,7 +6,12 @@ import com.anatoli.salonflow.repository.ClienteRepository;
 import com.anatoli.salonflow.repository.EmpleadoRepository;
 import com.anatoli.salonflow.repository.ServicioRepository;
 import org.springframework.web.bind.annotation.*;
-
+import jakarta.validation.Valid;
+import com.anatoli.salonflow.model.Cliente;
+import com.anatoli.salonflow.model.Servicio;
+import com.anatoli.salonflow.model.Empleado;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
@@ -40,15 +45,31 @@ public class CitaController {
     }
 
     @PostMapping
-    public Cita crearCita(@RequestBody CitaRequest request) {
-        Cita cita = new Cita();
+    public Cita crearCita(@Valid @RequestBody CitaRequest request) {
+        Cliente cliente = clienteRepository.findById(request.getClienteId())
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST,
+                        "El cliente no existe."
+                ));
 
+        Servicio servicio = servicioRepository.findById(request.getServicioId())
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST,
+                        "El servicio no existe."
+                ));
+
+        Empleado empleado = empleadoRepository.findById(request.getEmpleadoId())
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST,
+                        "El empleado no existe."
+                ));
+
+        Cita cita = new Cita();
         cita.setFechaHora(request.getFechaHora());
         cita.setEstado(request.getEstado());
-
-        cita.setCliente(clienteRepository.findById(request.getClienteId()).orElse(null));
-        cita.setServicio(servicioRepository.findById(request.getServicioId()).orElse(null));
-        cita.setEmpleado(empleadoRepository.findById(request.getEmpleadoId()).orElse(null));
+        cita.setCliente(cliente);
+        cita.setServicio(servicio);
+        cita.setEmpleado(empleado);
 
         return citaRepository.save(cita);
     }
@@ -62,35 +83,36 @@ public class CitaController {
     @PutMapping("/{id}")
     public Cita actualizarCita(
             @PathVariable Long id,
-            @RequestBody CitaRequest request) {
+            @Valid @RequestBody CitaRequest request) {
+
+        Cliente cliente = clienteRepository.findById(request.getClienteId())
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST,
+                        "El cliente no existe."
+                ));
+
+        Servicio servicio = servicioRepository.findById(request.getServicioId())
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST,
+                        "El servicio no existe."
+                ));
+
+        Empleado empleado = empleadoRepository.findById(request.getEmpleadoId())
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST,
+                        "El empleado no existe."
+                ));
 
         return citaRepository.findById(id).map(cita -> {
-
             cita.setFechaHora(request.getFechaHora());
-
             cita.setEstado(request.getEstado());
-
-            cita.setCliente(
-                    clienteRepository
-                            .findById(request.getClienteId())
-                            .orElse(null)
-            );
-
-            cita.setServicio(
-                    servicioRepository
-                            .findById(request.getServicioId())
-                            .orElse(null)
-            );
-
-            cita.setEmpleado(
-                    empleadoRepository
-                            .findById(request.getEmpleadoId())
-                            .orElse(null)
-            );
-
+            cita.setCliente(cliente);
+            cita.setServicio(servicio);
+            cita.setEmpleado(empleado);
             return citaRepository.save(cita);
-
-        }).orElse(null);
-
+        }).orElseThrow(() -> new ResponseStatusException(
+                HttpStatus.NOT_FOUND,
+                "La cita no existe."
+        ));
     }
 }

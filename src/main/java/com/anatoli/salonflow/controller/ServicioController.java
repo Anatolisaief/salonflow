@@ -4,7 +4,7 @@ package com.anatoli.salonflow.controller;
 import com.anatoli.salonflow.model.Servicio;
 import com.anatoli.salonflow.repository.ServicioRepository;
 import org.springframework.web.bind.annotation.*;
-
+import jakarta.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -23,7 +23,7 @@ public class ServicioController {
     }
 
     @PostMapping
-    public Servicio crearServicio(@RequestBody Servicio servicio) {
+    public Servicio crearServicio(@Valid @RequestBody Servicio servicio) {
         return servicioRepository.save(servicio);
     }
 
@@ -33,7 +33,7 @@ public class ServicioController {
     }
 
     @PutMapping("/{id}")
-    public Servicio actualizarServicio(@PathVariable Long id, @RequestBody Servicio servicioActualizado) {
+    public Servicio actualizarServicio(@PathVariable Long id, @Valid @RequestBody Servicio servicioActualizado) {
         return servicioRepository.findById(id).map(servicio -> {
             servicio.setNombre(servicioActualizado.getNombre());
             servicio.setPrecio(servicioActualizado.getPrecio());

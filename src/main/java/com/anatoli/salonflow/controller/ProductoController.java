@@ -3,7 +3,7 @@ package com.anatoli.salonflow.controller;
 import com.anatoli.salonflow.model.Producto;
 import com.anatoli.salonflow.repository.ProductoRepository;
 import org.springframework.web.bind.annotation.*;
-
+import jakarta.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -22,7 +22,7 @@ public class ProductoController {
     }
 
     @PostMapping
-    public Producto crearProducto(@RequestBody Producto producto) {
+    public Producto crearProducto(@Valid @RequestBody Producto producto) {
         return productoRepository.save(producto);
     }
 
@@ -42,7 +42,10 @@ public class ProductoController {
     }
 
     @PutMapping("/{id}")
-    public Producto actualizarProducto(@PathVariable Long id, @RequestBody Producto productoActualizado) {
+    public Producto actualizarProducto(
+            @PathVariable Long id,
+            @Valid @RequestBody Producto productoActualizado) {
+
         return productoRepository.findById(id).map(producto -> {
             producto.setNombre(productoActualizado.getNombre());
             producto.setMarca(productoActualizado.getMarca());

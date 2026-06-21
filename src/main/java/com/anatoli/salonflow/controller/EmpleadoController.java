@@ -3,7 +3,7 @@ package com.anatoli.salonflow.controller;
 import com.anatoli.salonflow.model.Empleado;
 import com.anatoli.salonflow.repository.EmpleadoRepository;
 import org.springframework.web.bind.annotation.*;
-
+import jakarta.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -22,7 +22,7 @@ public class EmpleadoController {
     }
 
     @PostMapping
-    public Empleado crearEmpleado(@RequestBody Empleado empleado) {
+    public Empleado crearEmpleado(@Valid @RequestBody Empleado empleado) {
         return empleadoRepository.save(empleado);
     }
 
@@ -32,7 +32,10 @@ public class EmpleadoController {
     }
 
     @PutMapping("/{id}")
-    public Empleado actualizarEmpleado(@PathVariable Long id, @RequestBody Empleado empleadoActualizado) {
+    public Empleado actualizarEmpleado(
+            @PathVariable Long id,
+            @Valid @RequestBody Empleado empleadoActualizado) {
+
         return empleadoRepository.findById(id).map(empleado -> {
             empleado.setNombre(empleadoActualizado.getNombre());
             empleado.setCargo(empleadoActualizado.getCargo());

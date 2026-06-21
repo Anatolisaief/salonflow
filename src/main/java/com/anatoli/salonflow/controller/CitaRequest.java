@@ -2,13 +2,25 @@ package com.anatoli.salonflow.controller;
 
 import java.time.LocalDateTime;
 import com.anatoli.salonflow.model.EstadoCita;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotNull;
 
 public class CitaRequest {
 
+    @NotNull(message = "La fecha y hora es obligatoria.")
+    @FutureOrPresent(message = "La cita no puede tener una fecha pasada.")
     private LocalDateTime fechaHora;
+
+    @NotNull(message = "El estado es obligatorio.")
     private EstadoCita estado;
+
+    @NotNull(message = "El cliente es obligatorio.")
     private Long clienteId;
+
+    @NotNull(message = "El servicio es obligatorio.")
     private Long servicioId;
+
+    @NotNull(message = "El empleado es obligatorio.")
     private Long empleadoId;
 
     public LocalDateTime getFechaHora() {

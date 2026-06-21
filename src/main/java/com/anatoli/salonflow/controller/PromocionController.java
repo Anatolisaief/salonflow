@@ -4,7 +4,9 @@ import com.anatoli.salonflow.model.Promocion;
 import com.anatoli.salonflow.repository.PromocionRepository;
 import com.anatoli.salonflow.repository.ServicioRepository;
 import org.springframework.web.bind.annotation.*;
-
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
@@ -27,7 +29,16 @@ public class PromocionController {
     }
 
     @PostMapping
-    public Promocion crearPromocion(@RequestBody PromocionRequest request) {
+    public Promocion crearPromocion(
+            @Valid @RequestBody PromocionRequest request) {
+
+        if (request.getFechaFin().isBefore(request.getFechaInicio())) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "La fecha de fin no puede ser anterior a la fecha de inicio."
+            );
+        }
+
         Promocion promocion = new Promocion();
 
         promocion.setNombre(request.getNombre());
@@ -49,8 +60,19 @@ public class PromocionController {
     }
 
     @PutMapping("/{id}")
-    public Promocion actualizarPromocion(@PathVariable Long id, @RequestBody PromocionRequest request) {
+    public Promocion actualizarPromocion(
+            @PathVariable Long id,
+            @Valid @RequestBody PromocionRequest request) {
+
+        if (request.getFechaFin().isBefore(request.getFechaInicio())) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "La fecha de fin no puede ser anterior a la fecha de inicio."
+            );
+        }
+
         return promocionRepository.findById(id).map(promocion -> {
+
             promocion.setNombre(request.getNombre());
             promocion.setDescripcion(request.getDescripcion());
             promocion.setFechaInicio(request.getFechaInicio());
@@ -62,6 +84,7 @@ public class PromocionController {
             );
 
             return promocionRepository.save(promocion);
+
         }).orElse(null);
     }
 
