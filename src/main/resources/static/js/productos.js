@@ -109,7 +109,7 @@ function mostrarProductos(productos) {
                 </button>
 
                 <button class="btn btn-eliminar"
-                        onclick="eliminarProducto(${producto.id})">
+                        onclick="abrirModalEliminar(${producto.id},eliminarProducto)">
                     Eliminar
                 </button>
             </td>
@@ -185,11 +185,6 @@ function actualizarProducto() {
 }
 
 function eliminarProducto(id) {
-    const confirmar = confirm("¿Seguro que quieres eliminar este producto?");
-
-    if (!confirmar) {
-        return;
-    }
 
     fetch(`${API_PRODUCTOS}/${id}`,{
         method:"DELETE"

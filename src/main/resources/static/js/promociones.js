@@ -100,7 +100,7 @@ function mostrarPromociones(promociones) {
                     Editar
                 </button>
 
-                <button class="btn btn-eliminar" onclick="eliminarPromocion(${promocion.id})">
+                <button class="btn btn-eliminar" onclick="abrirModalEliminar(${promocion.id},eliminarPromocion)">
                     Eliminar
                 </button>
             </td>
@@ -171,11 +171,6 @@ function actualizarPromocion() {
 }
 
 function eliminarPromocion(id) {
-    const confirmar = confirm("¿Seguro que quieres eliminar esta promoción?");
-
-    if (!confirmar) {
-        return;
-    }
 
     fetch(`${API_PROMOCIONES}/${id}`,{
         method:"DELETE"

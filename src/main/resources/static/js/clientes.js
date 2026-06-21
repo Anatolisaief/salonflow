@@ -120,7 +120,7 @@ function mostrarClientes(clientes) {
                 </button>
 
                 <button class="btn btn-eliminar"
-                        onclick="eliminarCliente(${cliente.id})">
+                       onclick="abrirModalEliminar(${cliente.id},eliminarCliente)">
                     Eliminar
                 </button>
             </td>
@@ -208,11 +208,6 @@ function actualizarCliente() {
 }
 
 function eliminarCliente(id) {
-    const confirmar = confirm("¿Seguro que quieres eliminar este cliente?");
-
-    if (!confirmar) {
-        return;
-    }
 
    fetch(`${API_CLIENTES}/${id}`, {
        method: "DELETE"

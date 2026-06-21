@@ -145,7 +145,7 @@ function mostrarCitas(citas) {
                 </button>
 
                 <button class="btn btn-eliminar"
-                        onclick="eliminarCita(${cita.id})">
+                        onclick="abrirModalEliminar(${cita.id},eliminarCita)">
                     Eliminar
                 </button>
             </td>
@@ -270,11 +270,6 @@ function actualizarCita() {
 }
 
 function eliminarCita(id) {
-    const confirmar = confirm("¿Seguro que quieres eliminar esta cita?");
-
-    if (!confirmar) {
-        return;
-    }
 
     fetch(`${API_CITAS}/${id}`, {
         method: "DELETE"

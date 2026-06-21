@@ -54,7 +54,7 @@ function mostrarServicios(servicios){
             <td>${servicio.duracion} min</td>
             <td>
                 <button class="btn btn-editar" onclick="prepararEdicionServicio(${servicio.id})">Editar</button>
-                <button class="btn btn-eliminar" onclick="eliminarServicio(${servicio.id})">Eliminar</button>
+                <button class="btn btn-eliminar" onclick="abrirModalEliminar(${servicio.id},eliminarServicio)">Eliminar</button>
             </td>
         `;
         tablaServicios.appendChild(fila);
@@ -158,11 +158,6 @@ function actualizarServicio() {
 }
 
 function eliminarServicio(id) {
-    const confirmar = confirm("¿Seguro que quieres eliminar este servicio?");
-
-    if (!confirmar) {
-        return;
-    }
 
     fetch(`${API_SERVICIOS}/${id}`,{
         method:"DELETE"

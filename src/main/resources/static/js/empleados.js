@@ -54,7 +54,7 @@ function cargarEmpleados() {
                         </button>
 
                         <button class="btn btn-eliminar"
-                                onclick="eliminarEmpleado(${empleado.id})">
+                                onclick="abrirModalEliminar(${empleado.id},eliminarEmpleado)">
                             Eliminar
                         </button>
                     </td>
@@ -170,11 +170,6 @@ function actualizarEmpleado() {
 }
 
 function eliminarEmpleado(id) {
-    const confirmar = confirm("¿Seguro que quieres eliminar este empleado?");
-
-    if (!confirmar) {
-        return;
-    }
 
     fetch(`${API_EMPLEADOS}/${id}`,{
         method:"DELETE"

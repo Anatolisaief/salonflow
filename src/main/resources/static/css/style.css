@@ -335,3 +335,64 @@ footer {
     border-right:none;
     border-bottom:none;
 }
+
+/* Dialogos */
+
+.modal-content{
+    border:none;
+    border-radius:24px;
+    background:#fffdf9;
+    box-shadow:0 18px 45px rgba(255,138,118,0.28);
+}
+
+.modal-header{
+    background:linear-gradient(90deg,#ffb199,#ffd1b8);
+    border-bottom:none;
+    border-radius:24px 24px 0 0;
+}
+
+.modal-title{
+    font-weight:800;
+    color:#3a2a24;
+}
+
+.modal-body{
+    color:#3a3a3a;
+    font-size:1.05rem;
+    padding:24px;
+}
+
+.modal-footer{
+    border-top:1px solid #f3d8cc;
+    padding:18px 24px;
+}
+
+.modal-footer .btn-secondary{
+    background:linear-gradient(135deg,var(--color-secundario),var(--color-principal))!important;
+    border:none!important;
+    border-radius:999px;
+    color:white!important;
+    font-weight:700;
+    padding:10px 24px;
+    box-shadow:0 8px 18px rgba(255,138,118,0.25);
+}
+
+.modal-footer .btn-secondary:hover{
+    transform:translateY(-1px);
+    background:linear-gradient(135deg,var(--color-principal),var(--color-principal-hover))!important;
+}
+
+.modal-footer .btn-danger{
+    background:linear-gradient(135deg,#ff4d6d,#e63946);
+    border:none;
+    border-radius:16px;
+    font-weight:700;
+    box-shadow:0 8px 18px rgba(230,57,70,0.25);
+    border-radius:999px;
+    color:white;
+    padding:10px 24px;
+}
+
+.modal-footer .btn-danger:hover{
+    transform:translateY(-1px);
+}
