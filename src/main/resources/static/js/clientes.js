@@ -46,6 +46,10 @@ function cargarClientes() {
         })
         .catch(error => {
             console.error("Error al cargar clientes:", error);
+            mostrarAlerta(
+                "✗ Ha ocurrido un error al cargar los clientes.",
+                "danger"
+            );
         });
 }
 
@@ -55,26 +59,45 @@ function crearCliente() {
         return;
     }
     const nuevoCliente = {
-        nombre: inputNombre.value,
-        telefono: inputTelefono.value,
-        email: inputEmail.value
+        nombre: inputNombre.value.trim(),
+        telefono: inputTelefono.value.trim(),
+        email: inputEmail.value.trim()
     };
 
-    fetch(API_CLIENTES, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
+    fetch(API_CLIENTES,{
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json"
         },
-        body: JSON.stringify(nuevoCliente)
+        body:JSON.stringify(nuevoCliente)
     })
-        .then(response => response.json())
-        .then(() => {
-            formularioCliente.reset();
-            cargarClientes();
-        })
-        .catch(error => {
-            console.error("Error al crear cliente:", error);
-        });
+    .then(response=>{
+
+        if(!response.ok){
+            throw new Error();
+        }
+        return response.json();
+
+    })
+    .then(()=>{
+
+        formularioCliente.reset();
+        cargarClientes();
+        mostrarAlerta(
+            "✓ Cliente creado correctamente.",
+            "success"
+        );
+
+    })
+    .catch(error=>{
+
+        console.error("Error al crear cliente:",error);
+        mostrarAlerta(
+            "✗ Ha ocurrido un error inesperado.",
+            "danger"
+        );
+
+    });
 }
 
 function mostrarClientes(clientes) {
@@ -130,6 +153,10 @@ function prepararEdicionCliente(id) {
         })
         .catch(error => {
             console.error("Error al preparar edición:", error);
+            mostrarAlerta(
+                            "✗ Ha ocurrido un error inesperado.",
+                            "danger"
+                        );
         });
 }
 
@@ -139,26 +166,45 @@ function actualizarCliente() {
         return;
     }
     const clienteActualizado = {
-        nombre: inputNombre.value,
-        telefono: inputTelefono.value,
-        email: inputEmail.value
+        nombre: inputNombre.value.trim(),
+        telefono: inputTelefono.value.trim(),
+        email: inputEmail.value.trim()
     };
 
-    fetch(`${API_CLIENTES}/${clienteEditandoId}`, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
+    fetch(`${API_CLIENTES}/${clienteEditandoId}`,{
+        method:"PUT",
+        headers:{
+            "Content-Type":"application/json"
         },
-        body: JSON.stringify(clienteActualizado)
+        body:JSON.stringify(clienteActualizado)
     })
-        .then(response => response.json())
-        .then(() => {
-            cancelarEdicion();
-            cargarClientes();
-        })
-        .catch(error => {
-            console.error("Error al actualizar cliente:", error);
-        });
+    .then(response=>{
+
+        if(!response.ok){
+            throw new Error();
+        }
+
+        return response.json();
+
+    })
+    .then(()=>{
+
+        cancelarEdicion();
+        cargarClientes();
+        mostrarAlerta(
+            "✓ Cliente actualizado correctamente.",
+            "success"
+        );
+
+    })
+    .catch(error=>{
+        console.error("Error al actualizar cliente:",error);
+        mostrarAlerta(
+            "✗ Ha ocurrido un error inesperado.",
+            "danger"
+        );
+
+    });
 }
 
 function eliminarCliente(id) {
@@ -168,14 +214,27 @@ function eliminarCliente(id) {
         return;
     }
 
-    fetch(`${API_CLIENTES}/${id}`, {
-        method: "DELETE"
-    })
-        .then(() => {
-            cargarClientes();
-        })
+   fetch(`${API_CLIENTES}/${id}`, {
+       method: "DELETE"
+   })
+       .then(response => {
+           if (!response.ok) {
+               throw new Error();
+           }
+       })
+       .then(() => {
+           cargarClientes();
+           mostrarAlerta(
+               "✓ Cliente eliminado correctamente.",
+               "success"
+           );
+       })
         .catch(error => {
             console.error("Error al eliminar cliente:", error);
+            mostrarAlerta(
+                            "✗ Ha ocurrido un error inesperado.",
+                            "danger"
+                        );
         });
 }
 
@@ -224,46 +283,84 @@ function buscarClientes() {
             });
 
             mostrarClientes(clientesFiltrados);
+
+            if (clientesFiltrados.length === 0) {
+                mostrarAlerta(
+                    "⚠ No se encontraron clientes.",
+                    "warning"
+                );
+            }
         })
         .catch(error => {
             console.error("Error al buscar clientes:", error);
+            mostrarAlerta(
+                "✗ Ha ocurrido un error inesperado.",
+                "danger"
+            );
         });
 }
 
 
 function validarCliente() {
 
-    const nombre = inputNombre.value.trim();
-    const telefono = inputTelefono.value.trim();
-    const email = inputEmail.value.trim();
+    const nombre=inputNombre.value.trim();
+    const telefono=inputTelefono.value.trim();
+    const email=inputEmail.value.trim();
 
-    if (nombre.length < 2) {
-        alert("El nombre debe tener al menos 2 caracteres.");
+    if(nombre.length<2){
+
+        mostrarAlerta(
+            "✗ El nombre debe tener al menos 2 caracteres.",
+            "danger"
+        );
+        return false;
+
+    }
+
+    if(nombre.length>50){
+
+        mostrarAlerta(
+            "✗ El nombre no puede superar los 50 caracteres.",
+            "danger"
+        );
+        return false;
+
+    }
+
+    if(!/^[A-Za-zÁÉÍÓÚáéíóúÑñÜü\s'-]+$/.test(nombre)){
+
+        mostrarAlerta(
+            "✗ El nombre solo puede contener letras, espacios, guiones y apóstrofes.",
+            "danger"
+        );
         return false;
     }
 
-    if (nombre.length > 50) {
-        alert("El nombre no puede superar los 50 caracteres.");
+    if(!/^[0-9]{9}$/.test(telefono)){
+
+        mostrarAlerta(
+            "✗ El teléfono debe tener exactamente 9 números.",
+            "danger"
+        );
+        return false;
+
+    }
+
+    if(email.length>100){
+
+        mostrarAlerta(
+            "✗ El email no puede superar los 100 caracteres.",
+            "danger"
+        );
         return false;
     }
 
-    if (!/^[A-Za-zÁÉÍÓÚáéíóúÑñÜü\s'-]+$/.test(nombre)) {
-        alert("El nombre solo puede contener letras, espacios, guiones y apóstrofes.");
-        return false;
-    }
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
 
-    if (!/^[0-9]{9}$/.test(telefono)) {
-        alert("El teléfono debe tener exactamente 9 números.");
-        return false;
-    }
-
-    if (email.length > 100) {
-        alert("El email no puede superar los 100 caracteres.");
-        return false;
-    }
-
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        alert("Introduce un email válido.");
+        mostrarAlerta(
+            "✗ Introduce un email válido.",
+            "danger"
+        );
         return false;
     }
 

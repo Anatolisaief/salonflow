@@ -65,6 +65,7 @@ function cargarEmpleados() {
         })
         .catch(error => {
             console.error("Error al cargar empleados:", error);
+            mostrarAlerta("✗ Ha ocurrido un error inesperado.", "danger");
         });
 }
 
@@ -80,21 +81,28 @@ function crearEmpleado() {
         horaFin: inputHoraFin.value
     };
 
-    fetch(API_EMPLEADOS, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
+    fetch(API_EMPLEADOS,{
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json"
         },
-        body: JSON.stringify(nuevoEmpleado)
+        body:JSON.stringify(nuevoEmpleado)
     })
-        .then(response => response.json())
-        .then(() => {
-            formularioEmpleado.reset();
-            cargarEmpleados();
-        })
-        .catch(error => {
-            console.error("Error al crear empleado:", error);
-        });
+    .then(response=>{
+        if(!response.ok){
+            throw new Error();
+        }
+        return response.json();
+    })
+    .then(()=>{
+        formularioEmpleado.reset();
+        cargarEmpleados();
+        mostrarAlerta("✓ Empleado creado correctamente.","success");
+    })
+    .catch(error=>{
+        console.error("Error al crear empleado:",error);
+        mostrarAlerta("✗ Ha ocurrido un error inesperado.","danger");
+    });
 }
 
 function prepararEdicionEmpleado(id) {
@@ -121,6 +129,7 @@ function prepararEdicionEmpleado(id) {
         })
         .catch(error => {
             console.error("Error al preparar edición:", error);
+            mostrarAlerta("✗ Ha ocurrido un error inesperado.", "danger");
         });
 }
 
@@ -136,21 +145,28 @@ function actualizarEmpleado() {
         horaFin: inputHoraFin.value
     };
 
-    fetch(`${API_EMPLEADOS}/${empleadoEditandoId}`, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
+    fetch(`${API_EMPLEADOS}/${empleadoEditandoId}`,{
+        method:"PUT",
+        headers:{
+            "Content-Type":"application/json"
         },
-        body: JSON.stringify(empleadoActualizado)
+        body:JSON.stringify(empleadoActualizado)
     })
-        .then(response => response.json())
-        .then(() => {
-            cancelarEdicion();
-            cargarEmpleados();
-        })
-        .catch(error => {
-            console.error("Error al actualizar empleado:", error);
-        });
+    .then(response=>{
+        if(!response.ok){
+            throw new Error();
+        }
+        return response.json();
+    })
+    .then(()=>{
+        cancelarEdicion();
+        cargarEmpleados();
+        mostrarAlerta("✓ Empleado actualizado correctamente.","success");
+    })
+    .catch(error=>{
+        console.error("Error al actualizar empleado:",error);
+        mostrarAlerta("✗ Ha ocurrido un error inesperado.","danger");
+    });
 }
 
 function eliminarEmpleado(id) {
@@ -160,15 +176,22 @@ function eliminarEmpleado(id) {
         return;
     }
 
-    fetch(`${API_EMPLEADOS}/${id}`, {
-        method: "DELETE"
+    fetch(`${API_EMPLEADOS}/${id}`,{
+        method:"DELETE"
     })
-        .then(() => {
-            cargarEmpleados();
-        })
-        .catch(error => {
-            console.error("Error al eliminar empleado:", error);
-        });
+    .then(response=>{
+        if(!response.ok){
+            throw new Error();
+        }
+    })
+    .then(()=>{
+        cargarEmpleados();
+        mostrarAlerta("✓ Empleado eliminado correctamente.","success");
+    })
+    .catch(error=>{
+        console.error("Error al eliminar empleado:",error);
+        mostrarAlerta("✗ Ha ocurrido un error inesperado.","danger");
+    });
 }
 
 function cancelarEdicion() {
@@ -190,50 +213,49 @@ function validarEmpleado() {
     const horaFin = inputHoraFin.value;
 
     if (nombre.length < 2) {
-        alert("El nombre debe tener al menos 2 caracteres.");
+        mostrarAlerta("✗ El nombre debe tener al menos 2 caracteres.", "danger");
         return false;
     }
 
     if (nombre.length > 50) {
-        alert("El nombre no puede superar los 50 caracteres.");
+        mostrarAlerta("✗ El nombre no puede superar los 50 caracteres.", "danger");
         return false;
     }
 
     if (!/^[A-Za-zÁÉÍÓÚáéíóúÑñÜü\s'-]+$/.test(nombre)) {
-        alert("El nombre solo puede contener letras, espacios, guiones y apóstrofes.");
+        mostrarAlerta("✗ El nombre solo puede contener letras, espacios, guiones y apóstrofes.", "danger");
         return false;
     }
 
     if (cargo.length < 2) {
-        alert("El cargo debe tener al menos 2 caracteres.");
+        mostrarAlerta("✗ El cargo debe tener al menos 2 caracteres.", "danger");
         return false;
     }
 
     if (cargo.length > 50) {
-        alert("El cargo no puede superar los 50 caracteres.");
+        mostrarAlerta("✗ El cargo no puede superar los 50 caracteres.", "danger");
         return false;
     }
 
     if (!/^[A-Za-zÁÉÍÓÚáéíóúÑñÜü\s]+$/.test(cargo)) {
-        alert("El cargo solo puede contener letras y espacios.");
+        mostrarAlerta("✗ El cargo solo puede contener letras y espacios.", "danger");
         return false;
     }
 
     if (horaInicio === "") {
-        alert("Selecciona la hora de inicio.");
+        mostrarAlerta("✗ Selecciona la hora de inicio.", "danger");
         return false;
     }
 
     if (horaFin === "") {
-        alert("Selecciona la hora de fin.");
+        mostrarAlerta("✗ Selecciona la hora de fin.", "danger");
         return false;
     }
 
     if (horaInicio >= horaFin) {
-        alert("La hora de inicio debe ser anterior a la hora de fin.");
+        mostrarAlerta("✗ La hora de inicio debe ser anterior a la hora de fin.", "danger");
         return false;
     }
 
     return true;
 }
-

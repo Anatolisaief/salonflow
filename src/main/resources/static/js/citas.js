@@ -61,6 +61,10 @@ function cargarClientes() {
         })
         .catch(error => {
             console.error("Error al cargar clientes:", error);
+            mostrarAlerta(
+                    "✗ Ha ocurrido un error inesperado.",
+                    "danger"
+                );
         });
 }
 
@@ -77,6 +81,10 @@ function cargarEmpleados() {
         })
         .catch(error => {
             console.error("Error al cargar empleados:", error);
+            mostrarAlerta(
+                    "✗ Ha ocurrido un error inesperado.",
+                    "danger"
+                );
         });
 }
 
@@ -93,6 +101,10 @@ function cargarServicios() {
         })
         .catch(error => {
             console.error("Error al cargar servicios:", error);
+            mostrarAlerta(
+                    "✗ Ha ocurrido un error inesperado.",
+                    "danger"
+                );
         });
 }
 
@@ -104,6 +116,10 @@ function cargarCitas() {
         })
         .catch(error => {
             console.error("Error al cargar citas:", error);
+            mostrarAlerta(
+                    "✗ Ha ocurrido un error inesperado.",
+                    "danger"
+                );
         });
 }
 
@@ -155,7 +171,9 @@ function crearCita() {
     })
         .then(response => {
             if (!response.ok) {
-                throw new Error("No se pudo crear la cita. El empleado ya puede tener una cita en esa fecha y hora.");
+                throw new Error(
+                    "No se pudo crear la cita. El empleado ya tiene una cita en esa fecha y hora."
+                );
             }
 
             return response.json();
@@ -163,10 +181,18 @@ function crearCita() {
         .then(() => {
             formularioCita.reset();
             cargarCitas();
+            mostrarAlerta(
+                "✓ Cita creada correctamente.",
+                "success"
+            );
         })
         .catch(error => {
-            alert(error.message);
+
             console.error("Error al crear cita:", error);
+            mostrarAlerta(
+                    `✗ ${error.message}`,
+                    "danger"
+                );
         });
 }
 
@@ -195,6 +221,10 @@ function prepararEdicionCita(id) {
         })
         .catch(error => {
             console.error("Error al preparar edición de cita:", error);
+            mostrarAlerta(
+                    "✗ Ha ocurrido un error inesperado.",
+                    "danger"
+                );
         });
 }
 
@@ -214,7 +244,9 @@ function actualizarCita() {
     })
         .then(response => {
             if (!response.ok) {
-                throw new Error("No se pudo actualizar la cita. El empleado ya puede tener otra cita en esa fecha y hora.");
+                throw new Error(
+                    "No se pudo actualizar la cita. El empleado ya tiene otra cita en esa fecha y hora."
+                );
             }
 
             return response.json();
@@ -222,10 +254,18 @@ function actualizarCita() {
         .then(() => {
             cancelarEdicion();
             cargarCitas();
+            mostrarAlerta(
+                "✓ Cita actualizada correctamente.",
+                "success"
+            );
         })
         .catch(error => {
-            alert(error.message);
+
             console.error("Error al actualizar cita:", error);
+            mostrarAlerta(
+                    `✗ ${error.message}`,
+                    "danger"
+                );
         });
 }
 
@@ -241,9 +281,17 @@ function eliminarCita(id) {
     })
         .then(() => {
             cargarCitas();
+            mostrarAlerta(
+                "✓ Cita eliminada correctamente.",
+                "success"
+            );
         })
         .catch(error => {
             console.error("Error al eliminar cita:", error);
+            mostrarAlerta(
+                    "✗ Ha ocurrido un error inesperado.",
+                    "danger"
+                );
         });
 }
 
@@ -304,9 +352,20 @@ function buscarCitas() {
             });
 
             mostrarCitas(citasFiltradas);
+
+            if (citasFiltradas.length === 0) {
+                mostrarAlerta(
+                    "⚠ No se encontraron citas.",
+                    "warning"
+                );
+            }
         })
         .catch(error => {
             console.error("Error al buscar citas:", error);
+            mostrarAlerta(
+                "✗ Ha ocurrido un error inesperado.",
+                "danger"
+            );
         });
 }
 
@@ -324,44 +383,69 @@ function formatearFecha(fechaHora) {
 }
 
 function validarCita() {
-    const fechaHora = inputFechaHora.value;
-    const estado = selectEstado.value;
-    const clienteId = selectCliente.value;
-    const empleadoId = selectEmpleado.value;
-    const servicioId = selectServicio.value;
 
-    if (fechaHora === "") {
-        alert("Selecciona la fecha y hora de la cita.");
+    const fechaHora=inputFechaHora.value;
+    const estado=selectEstado.value;
+    const clienteId=selectCliente.value;
+    const empleadoId=selectEmpleado.value;
+    const servicioId=selectServicio.value;
+
+    if(fechaHora===""){
+
+        mostrarAlerta(
+            "✗ Selecciona la fecha y hora de la cita.",
+            "danger"
+        );
         return false;
     }
 
-    const fechaSeleccionada = new Date(fechaHora);
-    const fechaActual = new Date();
+    const fechaSeleccionada=new Date(fechaHora);
+    const fechaActual=new Date();
 
-    if (fechaSeleccionada < fechaActual) {
-        alert("La cita no puede tener una fecha pasada.");
+    if(fechaSeleccionada<fechaActual){
+
+        mostrarAlerta(
+            "✗ La cita no puede tener una fecha pasada.",
+            "danger"
+        );
         return false;
     }
 
-    if (estado === "") {
-        alert("Selecciona el estado de la cita.");
+    if(estado===""){
+
+        mostrarAlerta(
+            "✗ Selecciona el estado de la cita.",
+            "danger"
+        );
         return false;
     }
 
-    if (clienteId === "") {
-        alert("Selecciona un cliente.");
+    if(clienteId===""){
+
+        mostrarAlerta(
+            "✗ Selecciona un cliente.",
+            "danger"
+        );
         return false;
     }
 
-    if (empleadoId === "") {
-        alert("Selecciona un empleado.");
+    if(empleadoId===""){
+
+        mostrarAlerta(
+            "✗ Selecciona un empleado.",
+            "danger"
+        );
         return false;
     }
 
-    if (servicioId === "") {
-        alert("Selecciona un servicio.");
+    if(servicioId===""){
+
+        mostrarAlerta(
+            "✗ Selecciona un servicio.",
+            "danger"
+        );
         return false;
     }
-
     return true;
+
 }

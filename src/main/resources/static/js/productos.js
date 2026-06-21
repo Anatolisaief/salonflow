@@ -41,17 +41,17 @@ botonMostrarTodos.addEventListener("click", function () {
     cargarProductos();
 });
 
-function cargarProductos() {
+function cargarProductos(){
     fetch(API_PRODUCTOS)
-        .then(response => response.json())
-        .then(productos => {
+        .then(response=>response.json())
+        .then(productos=>{
             mostrarProductos(productos);
         })
-        .catch(error => {
-            console.error("Error al cargar productos:", error);
+        .catch(error=>{
+            console.error("Error al cargar productos:",error);
+            mostrarAlerta("✗ Ha ocurrido un error inesperado.","danger");
         });
 }
-
 function crearProducto() {
 
     if (!validarProducto()) {
@@ -64,21 +64,28 @@ function crearProducto() {
             stock: Number(inputStock.value)
         };
 
-    fetch(API_PRODUCTOS, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
+    fetch(API_PRODUCTOS,{
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json"
         },
-        body: JSON.stringify(nuevoProducto)
+        body:JSON.stringify(nuevoProducto)
     })
-        .then(response => response.json())
-        .then(() => {
-            formularioProducto.reset();
-            cargarProductos();
-        })
-        .catch(error => {
-            console.error("Error al crear producto:", error);
-        });
+    .then(response=>{
+        if(!response.ok){
+            throw new Error();
+        }
+        return response.json();
+    })
+    .then(()=>{
+        formularioProducto.reset();
+        cargarProductos();
+        mostrarAlerta("✓ Producto creado correctamente.","success");
+    })
+    .catch(error=>{
+        console.error("Error al crear producto:",error);
+        mostrarAlerta("✗ Ha ocurrido un error inesperado.","danger");
+    });
 }
 
 function mostrarProductos(productos) {
@@ -93,7 +100,7 @@ function mostrarProductos(productos) {
             <td>${producto.id}</td>
             <td>${producto.nombre}</td>
             <td>${producto.marca}</td>
-            <td>${producto.precio}</td>
+            <td>${producto.precio.toFixed(2)} €</td>
             <td>${producto.stock}</td>
             <td>
                 <button class="btn btn-editar"
@@ -112,30 +119,32 @@ function mostrarProductos(productos) {
     });
 }
 
-function prepararEdicionProducto(id) {
+function prepararEdicionProducto(id){
     fetch(`${API_PRODUCTOS}/${id}`)
-        .then(response => response.json())
-        .then(producto => {
-            productoEditandoId = producto.id;
-
-            inputNombre.value = producto.nombre;
-            inputMarca.value = producto.marca;
-            inputPrecio.value = producto.precio;
-            inputStock.value = producto.stock;
-
-            botonGuardarProducto.textContent = "Guardar cambios";
+        .then(response=>{
+            if(!response.ok){
+                throw new Error();
+            }
+            return response.json();
+        })
+        .then(producto=>{
+            productoEditandoId=producto.id;
+            inputNombre.value=producto.nombre;
+            inputMarca.value=producto.marca;
+            inputPrecio.value=producto.precio;
+            inputStock.value=producto.stock;
+            botonGuardarProducto.textContent="Guardar cambios";
             botonGuardarProducto.classList.remove("btn-primary");
             botonGuardarProducto.classList.add("btn-success");
-
             botonCancelarEdicion.classList.remove("d-none");
-
             window.scrollTo({
-                top: 0,
-                behavior: "smooth"
+                top:0,
+                behavior:"smooth"
             });
         })
-        .catch(error => {
-            console.error("Error al preparar edición:", error);
+        .catch(error=>{
+            console.error("Error al preparar edición:",error);
+            mostrarAlerta("✗ Ha ocurrido un error inesperado.","danger");
         });
 }
 
@@ -151,21 +160,28 @@ function actualizarProducto() {
         stock: Number(inputStock.value)
     };
 
-    fetch(`${API_PRODUCTOS}/${productoEditandoId}`, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(productoActualizado)
-    })
-        .then(response => response.json())
-        .then(() => {
-            cancelarEdicion();
-            cargarProductos();
-        })
-        .catch(error => {
-            console.error("Error al actualizar producto:", error);
-        });
+   fetch(`${API_PRODUCTOS}/${productoEditandoId}`,{
+       method:"PUT",
+       headers:{
+           "Content-Type":"application/json"
+       },
+       body:JSON.stringify(productoActualizado)
+   })
+   .then(response=>{
+       if(!response.ok){
+           throw new Error();
+       }
+       return response.json();
+   })
+   .then(()=>{
+       cancelarEdicion();
+       cargarProductos();
+       mostrarAlerta("✓ Producto actualizado correctamente.","success");
+   })
+   .catch(error=>{
+       console.error("Error al actualizar producto:",error);
+       mostrarAlerta("✗ Ha ocurrido un error inesperado.","danger");
+   });
 }
 
 function eliminarProducto(id) {
@@ -175,15 +191,22 @@ function eliminarProducto(id) {
         return;
     }
 
-    fetch(`${API_PRODUCTOS}/${id}`, {
-        method: "DELETE"
+    fetch(`${API_PRODUCTOS}/${id}`,{
+        method:"DELETE"
     })
-        .then(() => {
-            cargarProductos();
-        })
-        .catch(error => {
-            console.error("Error al eliminar producto:", error);
-        });
+    .then(response=>{
+        if(!response.ok){
+            throw new Error();
+        }
+    })
+    .then(()=>{
+        cargarProductos();
+        mostrarAlerta("✓ Producto eliminado correctamente.","success");
+    })
+    .catch(error=>{
+        console.error("Error al eliminar producto:",error);
+        mostrarAlerta("✗ Ha ocurrido un error inesperado.","danger");
+    });
 }
 
 function cancelarEdicion() {
@@ -202,12 +225,22 @@ function buscarProductosPorNombre(nombre) {
     const nombreCodificado = encodeURIComponent(nombre);
 
     fetch(`${API_PRODUCTOS}/nombre/${nombreCodificado}`)
-        .then(response => response.json())
-        .then(productos => {
-            mostrarProductos(productos);
+        .then(response=>{
+            if(!response.ok){
+                throw new Error();
+            }
+
+            return response.json();
         })
-        .catch(error => {
-            console.error("Error al buscar productos por nombre:", error);
+        .then(productos=>{
+            mostrarProductos(productos);
+            if(productos.length===0){
+                mostrarAlerta("⚠ No se encontraron productos.","warning");
+            }
+        })
+        .catch(error=>{
+            console.error("Error al buscar productos por nombre:",error);
+            mostrarAlerta("✗ Ha ocurrido un error inesperado.","danger");
         });
 }
 
@@ -215,12 +248,22 @@ function buscarProductosPorMarca(marca) {
     const marcaCodificada = encodeURIComponent(marca);
 
     fetch(`${API_PRODUCTOS}/marca/${marcaCodificada}`)
-        .then(response => response.json())
-        .then(productos => {
-            mostrarProductos(productos);
+        .then(response=>{
+            if(!response.ok){
+                throw new Error();
+            }
+
+            return response.json();
         })
-        .catch(error => {
-            console.error("Error al buscar productos por marca:", error);
+        .then(productos=>{
+            mostrarProductos(productos);
+            if(productos.length===0){
+                mostrarAlerta("⚠ No se encontraron productos.","warning");
+            }
+        })
+        .catch(error=>{
+            console.error("Error al buscar productos por marca:",error);
+            mostrarAlerta("✗ Ha ocurrido un error inesperado.","danger");
         });
 }
 
@@ -233,78 +276,126 @@ function buscarProducto() {
         return;
     }
 
-    if (tipo === "nombre") {
+    if(tipo==="nombre"){
         buscarProductosPorNombre(valor);
-    }
-
-    if (tipo === "marca") {
+    }else if(tipo==="marca"){
         buscarProductosPorMarca(valor);
-    }
-
-    if (tipo === "id") {
+    }else if(tipo==="id"){
         buscarProductoPorId(valor);
     }
 }
 
-function buscarProductoPorId(id) {
+function buscarProductoPorId(id){
     fetch(`${API_PRODUCTOS}/${id}`)
-        .then(response => response.json())
-        .then(producto => {
-            if (producto === null || producto.id === undefined) {
-                mostrarProductos([]);
-            } else {
-                mostrarProductos([producto]);
-            }
-        })
-        .catch(error => {
-            console.error("Error al buscar producto por ID:", error);
+    .then(response=>{
+        if(response.status===404){
             mostrarProductos([]);
-        });
+            mostrarAlerta("⚠ No se encontraron productos.","warning");
+            return null;
+        }
+
+        if(!response.ok){
+            throw new Error();
+        }
+
+        return response.json();
+    })
+    .then(producto=>{
+        if(producto===null){
+            return;
+        }
+
+        mostrarProductos([producto]);
+    })
+    .catch(error=>{
+        console.error("Error al buscar producto por ID:",error);
+        mostrarAlerta("✗ Ha ocurrido un error inesperado.","danger");
+    });
 }
 
 function validarProducto() {
-    const nombre = inputNombre.value.trim();
-    const marca = inputMarca.value.trim();
-    const precio = Number(inputPrecio.value);
-    const stock = Number(inputStock.value);
 
-    if (nombre.length < 2) {
-        alert("El nombre debe tener al menos 2 caracteres.");
+    const nombre=inputNombre.value.trim();
+    const marca=inputMarca.value.trim();
+    const precio=Number(inputPrecio.value);
+    const stock=Number(inputStock.value);
+
+    if(nombre.length<2){
+
+        mostrarAlerta(
+            "✗ El nombre debe tener al menos 2 caracteres.",
+            "danger"
+        );
         return false;
+
     }
 
-    if (nombre.length > 100) {
-        alert("El nombre no puede superar los 100 caracteres.");
+    if(nombre.length>100){
+
+        mostrarAlerta(
+            "✗ El nombre no puede superar los 100 caracteres.",
+            "danger"
+        );
         return false;
+
     }
 
-    if (marca.length < 2) {
-        alert("La marca debe tener al menos 2 caracteres.");
+    if(marca.length<2){
+
+        mostrarAlerta(
+            "✗ La marca debe tener al menos 2 caracteres.",
+            "danger"
+        );
         return false;
+
     }
 
-    if (marca.length > 50) {
-        alert("La marca no puede superar los 50 caracteres.");
+    if(marca.length>50){
+
+        mostrarAlerta(
+            "✗ La marca no puede superar los 50 caracteres.",
+            "danger"
+        );
         return false;
+
     }
 
-    if (Number.isNaN(precio) || precio <= 0) {
-        alert("El precio debe ser mayor que 0.");
+    if(Number.isNaN(precio)||precio<=0){
+
+        mostrarAlerta(
+            "✗ El precio debe ser mayor que 0.",
+            "danger"
+        );
         return false;
+
     }
 
-    if (precio > 9999) {
-        alert("El precio no puede superar 9999.");
+    if(precio>9999){
+
+        mostrarAlerta(
+            "✗ El precio no puede superar 9999 €.",
+            "danger"
+        );
         return false;
+
     }
 
-    if (!Number.isInteger(stock) || stock < 0) {
-        alert("El stock debe ser un número entero igual o mayor que 0.");
+    if(!Number.isInteger(stock)||stock<0){
+
+        mostrarAlerta(
+            "✗ El stock debe ser un número entero igual o mayor que 0.",
+            "danger"
+        );
         return false;
+
     }
 
-    if (stock > 10000) {
-        alert("El stock no puede superar 10000 unidades.");
+    if(stock>10000){
+
+        mostrarAlerta(
+            "✗ El stock no puede superar las 10000 unidades.",
+            "danger"
+        );
         return false;
     }
 

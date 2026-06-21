@@ -314,3 +314,24 @@ footer {
     box-shadow: 0 -8px 24px rgba(255, 138, 118, 0.20);
 
 }
+
+/* Alertas */
+.alert-success{
+    background:#e8ffe2;
+    border:none;
+    color:#3c6d19;
+    border-left:6px solid #C4F05A;
+    border-top:none;
+    border-right:none;
+    border-bottom:none;
+}
+
+
+.alert-danger{
+    background:#ffe8e4;
+    color:#b42318;
+    border-left:6px solid #ff6b57;
+    border-top:none;
+    border-right:none;
+    border-bottom:none;
+}
