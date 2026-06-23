@@ -396,3 +396,43 @@ footer {
 .modal-footer .btn-danger:hover{
     transform:translateY(-1px);
 }
+
+/* badges */
+
+.badge-salon{
+    border-radius:999px;
+    padding:8px 14px;
+    font-weight:800;
+    font-size:0.8rem;
+}
+.badge-pendiente{
+    background:#fff3cd;
+    color:#856404;
+}
+
+.badge-confirmada{
+    background:rgba(196,240,90,0.25);
+    color:#6f9200;
+}
+
+.badge-realizada{
+    background:#e8ffe2;
+    color:#3c6d19;
+}
+
+.badge-cancelada{
+    background:#ffdbe5;
+    color:#c2185b;
+}
+.badge-stock-rojo{
+    background:#ffdbe5;
+    color:#c2185b;
+}
+.badge-stock-naranja{
+    background:#fff3cd;
+    color:#856404;
+}
+.badge-stock-verde{
+    background:rgba(196,240,90,0.25);
+    color:#6f9200;
+}

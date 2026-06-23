@@ -101,7 +101,7 @@ function mostrarProductos(productos) {
             <td>${producto.nombre}</td>
             <td>${producto.marca}</td>
             <td>${producto.precio.toFixed(2)} €</td>
-            <td>${producto.stock}</td>
+            <td>${crearBadgeStock(producto.stock)}</td>
             <td>
                 <button class="btn btn-editar"
                         onclick="prepararEdicionProducto(${producto.id})">

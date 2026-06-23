@@ -134,7 +134,7 @@ function mostrarCitas(citas) {
         fila.innerHTML = `
             <td>${cita.id}</td>
             <td>${formatearFecha(cita.fechaHora)}</td>
-            <td>${cita.estado}</td>
+            <td>${crearBadgeEstado(cita.estado)}</td>
             <td>${cita.cliente ? cita.cliente.nombre : ""}</td>
             <td>${cita.empleado ? cita.empleado.nombre : ""}</td>
             <td>${cita.servicio ? cita.servicio.nombre : ""}</td>

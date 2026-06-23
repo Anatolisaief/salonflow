@@ -61,3 +61,29 @@ function mostrarAlerta(mensaje,tipo="success"){
         alerta.remove();
     },5000);
 }
+
+function crearBadgeEstado(estado){
+    if(estado==="PENDIENTE"){
+        return '<span class="badge-salon badge-pendiente">PENDIENTE</span>';
+    }
+    if(estado==="CONFIRMADA"){
+        return '<span class="badge-salon badge-confirmada">CONFIRMADA</span>';
+    }
+    if(estado==="CANCELADA"){
+        return '<span class="badge-salon badge-cancelada">CANCELADA</span>';
+    }
+    if(estado==="REALIZADA"){
+        return '<span class="badge-salon badge-realizada">REALIZADA</span>';
+    }
+    return `<span class="badge-salon badge-pendiente">${estado}</span>`;
+}
+
+function crearBadgeStock(stock){
+    if(stock<=2){
+        return `<span class="badge-salon badge-stock-rojo">${stock}</span>`;
+    }
+    if(stock<=5){
+        return `<span class="badge-salon badge-stock-naranja">${stock}</span>`;
+    }
+    return `<span class="badge-salon badge-stock-verde">${stock}</span>`;
+}

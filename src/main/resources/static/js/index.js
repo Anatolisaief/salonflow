@@ -1,5 +1,9 @@
 const API_CITAS="http://localhost:8080/citas";
 const tablaProximasCitas=document.getElementById("tablaProximasCitas");
+const API_PRODUCTOS="http://localhost:8080/productos";
+const tablaStockBajo=document.getElementById("tablaStockBajo");
+const API_PROMOCIONES="http://localhost:8080/promociones";
+const tablaPromocionesActivas=document.getElementById("tablaPromocionesActivas");
 
 document.addEventListener("DOMContentLoaded", function () {
     cargarTotal("http://localhost:8080/clientes", "totalClientes");
@@ -9,6 +13,8 @@ document.addEventListener("DOMContentLoaded", function () {
     cargarTotal("http://localhost:8080/productos", "totalProductos");
     cargarTotal("http://localhost:8080/promociones", "totalPromociones");
     cargarProximasCitas();
+    cargarProductosStockBajo();
+    cargarPromocionesActivas();
 });
 
 function cargarTotal(url, elementoId) {
@@ -48,7 +54,7 @@ function mostrarProximasCitas(citas){
             <td>${cita.cliente?cita.cliente.nombre:""}</td>
             <td>${cita.empleado?cita.empleado.nombre:""}</td>
             <td>${cita.servicio?cita.servicio.nombre:""}</td>
-            <td>${cita.estado}</td>
+            <td>${crearBadgeEstado(cita.estado)}</td>
         `;
         tablaProximasCitas.appendChild(fila);
     });
@@ -63,4 +69,81 @@ function formatearFecha(fechaHora){
         dateStyle:"short",
         timeStyle:"short"
     });
+}
+
+function cargarProductosStockBajo(){
+
+    fetch(API_PRODUCTOS)
+    .then(response=>response.json())
+    .then(productos=>{
+
+        const stockBajo=productos
+            .filter(producto=>producto.stock<=5)
+            .sort((a,b)=>a.stock-b.stock);
+
+        mostrarProductosStockBajo(stockBajo);
+
+    })
+    .catch(error=>{
+        console.error("Error al cargar productos:",error);
+    });
+
+}
+
+function mostrarProductosStockBajo(productos){
+
+    tablaStockBajo.innerHTML="";
+
+    productos.forEach(producto=>{
+
+        const fila=document.createElement("tr");
+
+        fila.innerHTML=`
+            <td>${producto.nombre}</td>
+            <td>${producto.marca}</td>
+            <td>${crearBadgeStock(producto.stock)}</td>
+        `;
+
+        tablaStockBajo.appendChild(fila);
+
+    });
+
+}
+
+function cargarPromocionesActivas(){
+
+    fetch(API_PROMOCIONES)
+    .then(response=>response.json())
+    .then(promociones=>{
+        const hoy=new Date();
+        const activas=promociones.filter(promocion=>{
+
+            const inicio=new Date(promocion.fechaInicio);
+            const fin=new Date(promocion.fechaFin);
+            return inicio<=hoy&&fin>=hoy;
+
+        });
+        mostrarPromocionesActivas(activas);
+    })
+    .catch(error=>{
+        console.error("Error al cargar promociones:",error);
+    });
+
+}
+
+function mostrarPromocionesActivas(promociones){
+
+    tablaPromocionesActivas.innerHTML="";
+    promociones.forEach(promocion=>{
+
+        const fila=document.createElement("tr");
+        fila.innerHTML=`
+            <td>${promocion.nombre}</td>
+            <td>${promocion.descuento}%</td>
+            <td>${promocion.fechaFin}</td>
+        `;
+        tablaPromocionesActivas.appendChild(fila);
+
+    });
+
 }
