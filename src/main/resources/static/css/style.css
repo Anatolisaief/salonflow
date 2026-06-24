@@ -133,6 +133,59 @@ h5 {
     color: var(--color-texto-card);
 }
 
+.card-body h5{
+    font-size:1.8rem;
+    font-weight:700;
+    margin-bottom:18px;
+}
+
+.card-body h5 i{
+    font-size:1.8rem;
+    margin-right:8px;
+}
+
+.display-6{
+    font-size:1.8rem;
+    font-weight:700;
+}
+
+.dashboard-card-body{
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    gap:22px;
+    text-align:left;
+    padding-left:25px;
+}
+
+.dashboard-icon{
+    width:72px;
+    height:72px;
+    border-radius:20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+}
+
+.dashboard-icon i{
+    font-size:2.2rem;
+}
+
+.dashboard-card-body h5{
+    font-size:1.55rem;
+    margin-bottom:8px;
+}
+
+.dashboard-card-body .display-6{
+    font-size:2rem;
+    font-weight:800;
+    color:var(--color-principal);
+    margin:0;
+}
+
+
+
 
 /* Dashboard */
 
@@ -405,34 +458,118 @@ footer {
     font-weight:800;
     font-size:0.8rem;
 }
+
 .badge-pendiente{
-    background:#fff3cd;
-    color:#856404;
+    background:#fff1a8;
+    color:#9b6b00;
 }
 
 .badge-confirmada{
-    background:rgba(196,240,90,0.25);
-    color:#6f9200;
+    background:#dfff9d;
+    color:#4f8a00;
 }
 
 .badge-realizada{
-    background:#e8ffe2;
-    color:#3c6d19;
+    background:#dff7e0;
+    color:#1f7a3d;
 }
 
 .badge-cancelada{
-    background:#ffdbe5;
-    color:#c2185b;
+    background:#ffd3e2;
+    color:#d81b60;
 }
+
 .badge-stock-rojo{
-    background:#ffdbe5;
-    color:#c2185b;
+    background:#ffbfd6;
+    color:#d81b60;
 }
+
 .badge-stock-naranja{
-    background:#fff3cd;
-    color:#856404;
+    background:#ffe89a;
+    color:#b57a00;
 }
+
 .badge-stock-verde{
-    background:rgba(196,240,90,0.25);
-    color:#6f9200;
+    background:#dfff9d;
+    color:#4f8a00;
+}
+
+
+
+/* tablas de promociones y stock bajo */
+.card-stock .card-header{
+    background:linear-gradient(
+        90deg,
+        #ffd4c8,
+        #ffb8c6
+    );
+}
+
+.card-promociones .card-header{
+    background:linear-gradient(
+        90deg,
+        #d9ff9f,
+        #fff89a
+    );
+}
+
+.card-stock{
+    box-shadow:0 12px 30px rgba(255,107,154,0.15);
+}
+
+.card-promociones{
+    box-shadow:0 12px 30px rgba(196,240,90,0.18);
+}
+
+
+/* Iconos */
+
+.icon-clientes{
+    color:#f45f8e;
+}
+
+.icon-empleados{
+    color:#ff7f73;
+}
+
+.icon-servicios{
+    color:#f59d28;
+}
+
+.icon-citas{
+    color:#56b980;
+}
+
+.icon-productos{
+    color:#c79300;
+}
+
+.icon-promociones{
+    color:#95c11f;
+}
+
+/* Fondos */
+
+.icon-bg-clientes{
+    background:#ffd9e6;
+}
+
+.icon-bg-empleados{
+    background:#ffe5dd;
+}
+
+.icon-bg-servicios{
+    background:#fff0cf;
+}
+
+.icon-bg-citas{
+    background:#e5f8ef;
+}
+
+.icon-bg-productos{
+    background:#fff5c8;
+}
+
+.icon-bg-promociones{
+    background:#ecf9c7;
 }

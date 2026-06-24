@@ -8,15 +8,13 @@
     <title>SalonFlow</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-
     <link rel="preconnect"
           href="https://fonts.gstatic.com"
           crossorigin>
-
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap"
           rel="stylesheet">
-
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -54,9 +52,14 @@
             <div class="col-md-4">
                 <a href="clientes.html" class="text-decoration-none text-dark">
                     <div class="card text-center h-100">
-                        <div class="card-body">
-                            <h5>Clientes</h5>
-                            <p class="display-6" id="totalClientes">0</p>
+                        <div class="card-body dashboard-card-body">
+                            <div class="dashboard-icon icon-bg-clientes">
+                                <i class="bi bi-people-fill icon-clientes"></i>
+                            </div>
+                            <div>
+                                <h5>Clientes</h5>
+                                <p class="display-6" id="totalClientes">0</p>
+                            </div>
                         </div>
                     </div>
                 </a>
@@ -67,9 +70,14 @@
             <div class="col-md-4">
                 <a href="empleados.html" class="text-decoration-none text-dark">
                     <div class="card text-center h-100">
-                        <div class="card-body">
-                            <h5>Empleados</h5>
-                            <p class="display-6" id="totalEmpleados">0</p>
+                        <div class="card-body dashboard-card-body">
+                            <div class="dashboard-icon icon-bg-empleados">
+                                <i class="bi bi-person-badge-fill icon-empleados"></i>
+                            </div>
+                            <div>
+                                <h5>Empleados</h5>
+                                <p class="display-6" id="totalEmpleados">0</p>
+                            </div>
                         </div>
                     </div>
                 </a>
@@ -80,9 +88,14 @@
             <div class="col-md-4">
                 <a href="servicios.html" class="text-decoration-none text-dark">
                     <div class="card text-center h-100">
-                        <div class="card-body">
-                            <h5>Servicios</h5>
-                            <p class="display-6" id="totalServicios">0</p>
+                        <div class="card-body dashboard-card-body">
+                            <div class="dashboard-icon icon-bg-servicios">
+                                <i class="bi bi-scissors icon-servicios"></i>
+                            </div>
+                            <div>
+                                <h5>Servicios</h5>
+                                <p class="display-6" id="totalServicios">0</p>
+                            </div>
                         </div>
                     </div>
                 </a>
@@ -93,9 +106,14 @@
             <div class="col-md-4">
                 <a href="citas.html" class="text-decoration-none text-dark">
                     <div class="card text-center h-100">
-                        <div class="card-body">
-                            <h5>Citas</h5>
-                            <p class="display-6" id="totalCitas">0</p>
+                        <div class="card-body dashboard-card-body">
+                            <div class="dashboard-icon icon-bg-citas">
+                                <i class="bi bi-calendar-heart icon-citas"></i>
+                            </div>
+                            <div>
+                                <h5>Citas</h5>
+                                <p class="display-6" id="totalCitas">0</p>
+                            </div>
                         </div>
                     </div>
                 </a>
@@ -106,9 +124,14 @@
             <div class="col-md-4">
                 <a href="productos.html" class="text-decoration-none text-dark">
                     <div class="card text-center h-100">
-                        <div class="card-body">
-                            <h5>Productos</h5>
-                            <p class="display-6" id="totalProductos">0</p>
+                        <div class="card-body dashboard-card-body">
+                            <div class="dashboard-icon icon-bg-productos">
+                                <i class="bi bi-box-seam icon-productos"></i>
+                            </div>
+                            <div>
+                                <h5>Productos</h5>
+                                <p class="display-6" id="totalProductos">0</p>
+                            </div>
                         </div>
                     </div>
                 </a>
@@ -119,9 +142,14 @@
             <div class="col-md-4">
                 <a href="promociones.html" class="text-decoration-none text-dark">
                     <div class="card text-center h-100">
-                        <div class="card-body">
-                            <h5>Promociones</h5>
-                            <p class="display-6" id="totalPromociones">0</p>
+                        <div class="card-body dashboard-card-body">
+                            <div class="dashboard-icon icon-bg-promociones">
+                                <i class="bi bi-tags-fill icon-promociones"></i>
+                            </div>
+                            <div>
+                                <h5>Promociones</h5>
+                                <p class="display-6" id="totalPromociones">0</p>
+                            </div>
                         </div>
                     </div>
                 </a>
@@ -132,7 +160,9 @@
     </section>
     <section class="container my-5">
         <div class="card">
-            <div class="card-header">Próximas citas</div>
+            <div class="card-header">
+                <i class="bi bi-calendar-event me-2"></i>Próximas citas
+            </div>
             <div class="card-body">
                 <table class="table table-striped">
                     <thead>
@@ -150,41 +180,44 @@
         </div>
     </section>
     <section class="container my-5">
-        <div class="card">
-            <div class="card-header">
-                Productos con stock bajo
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card card-stock">
+                    <div class="card-header">
+                        <i class="bi bi-box-seam me-2"></i>Productos con stock bajo
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Marca</th>
+                                <th>Stock</th>
+                            </tr>
+                            </thead>
+                            <tbody id="tablaStockBajo"></tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>Producto</th>
-                        <th>Marca</th>
-                        <th>Stock</th>
-                    </tr>
-                    </thead>
-                    <tbody id="tablaStockBajo"></tbody>
-                </table>
-            </div>
-        </div>
-    </section>
-
-    <section class="container my-5">
-        <div class="card">
-            <div class="card-header">
-                Promociones activas
-            </div>
-            <div class="card-body">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Descuento</th>
-                        <th>Hasta</th>
-                    </tr>
-                    </thead>
-                    <tbody id="tablaPromocionesActivas"></tbody>
-                </table>
+            <div class="col-md-6">
+                <div class="card card-promociones">
+                    <div class="card-header">
+                        <i class="bi bi-tags-fill me-2"></i>Promociones activas
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Descuento</th>
+                                <th>Hasta</th>
+                            </tr>
+                            </thead>
+                            <tbody id="tablaPromocionesActivas"></tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
