@@ -40,6 +40,9 @@ public class ClienteController {
             cliente.setNombre(clienteActualizado.getNombre());
             cliente.setTelefono(clienteActualizado.getTelefono());
             cliente.setEmail(clienteActualizado.getEmail());
+            cliente.setFechaNacimiento(clienteActualizado.getFechaNacimiento());
+            cliente.setAlergias(clienteActualizado.getAlergias());
+            cliente.setObservaciones(clienteActualizado.getObservaciones());
             return clienteRepository.save(cliente);
         }).orElse(null);
     }

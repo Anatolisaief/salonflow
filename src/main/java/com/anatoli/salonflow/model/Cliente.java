@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "clientes")
@@ -35,6 +36,14 @@ public class Cliente {
     @Size(max = 100, message = "El email no puede superar los 100 caracteres.")
     private String email;
 
+    private LocalDate fechaNacimiento;
+
+    @Size(max=255,message="Las alergias no pueden superar los 255 caracteres.")
+    private String alergias;
+
+    @Size(max=500,message="Las observaciones no pueden superar los 500 caracteres.")
+    private String observaciones;
+
     public Cliente() {
     }
 
@@ -64,5 +73,29 @@ public class Cliente {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public LocalDate getFechaNacimiento(){
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(LocalDate fechaNacimiento){
+        this.fechaNacimiento=fechaNacimiento;
+    }
+
+    public String getAlergias(){
+        return alergias;
+    }
+
+    public void setAlergias(String alergias){
+        this.alergias=alergias;
+    }
+
+    public String getObservaciones(){
+        return observaciones;
+    }
+
+    public void setObservaciones(String observaciones){
+        this.observaciones=observaciones;
     }
 }

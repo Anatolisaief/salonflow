@@ -6,6 +6,9 @@ const tablaClientes = document.getElementById("tablaClientes");
 const inputNombre = document.getElementById("nombre");
 const inputTelefono = document.getElementById("telefono");
 const inputEmail = document.getElementById("email");
+const inputFechaNacimiento=document.getElementById("fechaNacimiento");
+const inputAlergias=document.getElementById("alergias");
+const inputObservaciones=document.getElementById("observaciones");
 
 const tipoBusqueda = document.getElementById("tipoBusqueda");
 const textoBusqueda = document.getElementById("textoBusqueda");
@@ -58,10 +61,13 @@ function crearCliente() {
     if (!validarCliente()) {
         return;
     }
-    const nuevoCliente = {
-        nombre: inputNombre.value.trim(),
-        telefono: inputTelefono.value.trim(),
-        email: inputEmail.value.trim()
+    const nuevoCliente={
+        nombre:inputNombre.value.trim(),
+        telefono:inputTelefono.value.trim(),
+        email:inputEmail.value.trim(),
+        fechaNacimiento:inputFechaNacimiento.value||null,
+        alergias:inputAlergias.value.trim(),
+        observaciones:inputObservaciones.value.trim()
     };
 
     fetch(API_CLIENTES,{
@@ -113,7 +119,13 @@ function mostrarClientes(clientes) {
             <td>${cliente.nombre}</td>
             <td>${cliente.telefono}</td>
             <td>${cliente.email}</td>
+            <td>${cliente.fechaNacimiento||""}</td>
             <td>
+            <button
+                class="btn btn-ficha"
+                onclick="window.location.href='cliente-detalle.html?id=${cliente.id}'">
+                Ver ficha
+            </button>
                 <button class="btn btn-editar"
                         onclick="prepararEdicionCliente(${cliente.id})">
                     Editar
@@ -139,6 +151,9 @@ function prepararEdicionCliente(id) {
             inputNombre.value = cliente.nombre;
             inputTelefono.value = cliente.telefono;
             inputEmail.value = cliente.email;
+            inputFechaNacimiento.value=cliente.fechaNacimiento||"";
+            inputAlergias.value=cliente.alergias||"";
+            inputObservaciones.value=cliente.observaciones||"";
 
             botonGuardarCliente.textContent = "Guardar cambios";
             botonGuardarCliente.classList.remove("btn-primary");
@@ -165,10 +180,13 @@ function actualizarCliente() {
     if (!validarCliente()) {
         return;
     }
-    const clienteActualizado = {
-        nombre: inputNombre.value.trim(),
-        telefono: inputTelefono.value.trim(),
-        email: inputEmail.value.trim()
+    const clienteActualizado={
+        nombre:inputNombre.value.trim(),
+        telefono:inputTelefono.value.trim(),
+        email:inputEmail.value.trim(),
+        fechaNacimiento:inputFechaNacimiento.value||null,
+        alergias:inputAlergias.value.trim(),
+        observaciones:inputObservaciones.value.trim()
     };
 
     fetch(`${API_CLIENTES}/${clienteEditandoId}`,{
@@ -301,6 +319,18 @@ function validarCliente() {
     const nombre=inputNombre.value.trim();
     const telefono=inputTelefono.value.trim();
     const email=inputEmail.value.trim();
+    const alergias=inputAlergias.value.trim();
+    const observaciones=inputObservaciones.value.trim();
+
+    if(alergias.length>255){
+        mostrarAlerta("✗ Las alergias no pueden superar los 255 caracteres.","danger");
+        return false;
+    }
+
+    if(observaciones.length>500){
+        mostrarAlerta("✗ Las observaciones no pueden superar los 500 caracteres.","danger");
+        return false;
+    }
 
     if(nombre.length<2){
 

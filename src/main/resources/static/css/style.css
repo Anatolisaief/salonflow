@@ -311,6 +311,25 @@ a .card:hover {
     transform: scale(1.05);
 }
 
+.btn-ficha{
+    background:linear-gradient(
+        135deg,
+        #B7E778,
+        var(--color-verde)
+    );
+    color:white;
+    border:none;
+    border-radius:999px;
+    font-weight:700;
+    padding:8px 18px;
+    transition:all 0.25s ease;
+}
+
+.btn-ficha:hover{
+    transform:scale(1.05);
+     color:black;
+}
+
 /* Formularios */
 
 .form-control,
