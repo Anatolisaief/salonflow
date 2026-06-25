@@ -35,33 +35,63 @@
         <div class="card-body">
             <form id="formularioEmpleado">
 
-                <div class="mb-3">
-                    <label for="nombre" class="form-label">Nombre</label>
-                    <input type="text" class="form-control" id="nombre" required>
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label for="nombre" class="form-label">Nombre</label>
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="nombre"
+                                required>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="cargo" class="form-label">Cargo</label>
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="cargo"
+                                required>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="horaInicio" class="form-label">Hora inicio</label>
+                        <input
+                                type="time"
+                                class="form-control"
+                                id="horaInicio"
+                                required>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="horaFin" class="form-label">Hora fin</label>
+                        <input
+                                type="time"
+                                class="form-control"
+                                id="horaFin"
+                                required>
+                    </div>
+
                 </div>
 
-                <div class="mb-3">
-                    <label for="cargo" class="form-label">Cargo</label>
-                    <input type="text" class="form-control" id="cargo" required>
+                <div class="d-flex justify-content-end gap-2 mt-3">
+
+                    <button
+                            type="button"
+                            class="btn btn-secondary d-none"
+                            id="botonCancelarEdicion">
+                        Cancelar edición
+                    </button>
+
+                    <button
+                            type="submit"
+                            class="btn btn-primary"
+                            id="botonGuardarEmpleado">
+                        Crear empleado
+                    </button>
+
                 </div>
-
-                <div class="mb-3">
-                    <label for="horaInicio" class="form-label">Hora inicio</label>
-                    <input type="time" class="form-control" id="horaInicio" required>
-                </div>
-
-                <div class="mb-3">
-                    <label for="horaFin" class="form-label">Hora fin</label>
-                    <input type="time" class="form-control" id="horaFin" required>
-                </div>
-
-                <button type="submit" class="btn btn-primary" id="botonGuardarEmpleado">
-                    Crear empleado
-                </button>
-
-                <button type="button" class="btn btn-secondary d-none" id="botonCancelarEdicion">
-                    Cancelar edición
-                </button>
 
             </form>
         </div>

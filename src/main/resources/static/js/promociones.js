@@ -1,4 +1,5 @@
 const API_PROMOCIONES = "http://localhost:8080/promociones";
+const API_SERVICIOS="http://localhost:8080/servicios";
 
 const formularioPromocion = document.getElementById("formularioPromocion");
 const tablaPromociones = document.getElementById("tablaPromociones");
@@ -14,8 +15,12 @@ const botonGuardarPromocion = document.getElementById("botonGuardarPromocion");
 const botonCancelarEdicion = document.getElementById("botonCancelarEdicion");
 
 let promocionEditandoId = null;
+let selectorServicios=null;
 
-document.addEventListener("DOMContentLoaded", cargarPromociones);
+document.addEventListener("DOMContentLoaded",()=>{
+    cargarPromociones();
+    cargarServicios();
+});
 
 formularioPromocion.addEventListener("submit", function (event) {
     event.preventDefault();
@@ -125,7 +130,9 @@ function prepararEdicionPromocion(id){
         inputFechaInicio.value=promocion.fechaInicio;
         inputFechaFin.value=promocion.fechaFin;
         inputDescuento.value=promocion.descuento;
-        inputServiciosIds.value=promocion.servicios?promocion.servicios.map(servicio=>servicio.id).join(","):"";
+        const ids=promocion.servicios?promocion.servicios.map(servicio=>String(servicio.id)):[];
+        selectorServicios.removeActiveItems();
+        selectorServicios.setChoiceByValue(ids);
         botonGuardarPromocion.textContent="Guardar cambios";
         botonGuardarPromocion.classList.remove("btn-primary");
         botonGuardarPromocion.classList.add("btn-success");
@@ -190,23 +197,18 @@ function eliminarPromocion(id) {
     });
 }
 
-function cancelarEdicion() {
-    promocionEditandoId = null;
-
+function cancelarEdicion(){
+    promocionEditandoId=null;
     formularioPromocion.reset();
-
-    botonGuardarPromocion.textContent = "Crear promoción";
+    selectorServicios.removeActiveItems();
+    botonGuardarPromocion.textContent="Crear promoción";
     botonGuardarPromocion.classList.remove("btn-success");
     botonGuardarPromocion.classList.add("btn-primary");
-
     botonCancelarEdicion.classList.add("d-none");
 }
 
 function obtenerDatosFormulario(){
-    const serviciosIds=inputServiciosIds.value
-        .split(",")
-        .map(id=>Number(id.trim()))
-        .filter(id=>!isNaN(id));
+    const serviciosIds=Array.from(inputServiciosIds.selectedOptions).map(option=>Number(option.value));
     return{
         nombre:inputNombre.value.trim(),
         descripcion:inputDescripcion.value.trim(),
@@ -217,6 +219,28 @@ function obtenerDatosFormulario(){
     };
 }
 
+function cargarServicios(){
+    fetch(API_SERVICIOS)
+    .then(response=>response.json())
+    .then(servicios=>{
+        const opciones=servicios.map(servicio=>({
+            value:servicio.id,
+            label:`${servicio.nombre} - ${servicio.precio} €`
+        }));
+        selectorServicios=new Choices(inputServiciosIds,{
+            removeItemButton:true,
+            searchEnabled:true,
+            placeholderValue:"Selecciona servicios",
+            searchPlaceholderValue:"Buscar servicio..."
+        });
+        selectorServicios.setChoices(opciones,"value","label",true);
+    })
+    .catch(error=>{
+        console.error("Error al cargar servicios:",error);
+        mostrarAlerta("✗ Ha ocurrido un error al cargar los servicios.","danger");
+    });
+}
+
 function validarPromocion() {
 
     const nombre=inputNombre.value.trim();
@@ -225,10 +249,7 @@ function validarPromocion() {
     const fechaFin=inputFechaFin.value;
     const descuento=Number(inputDescuento.value);
 
-    const serviciosIds=inputServiciosIds.value
-        .split(",")
-        .map(id=>Number(id.trim()))
-        .filter(id=>!isNaN(id));
+    const serviciosIds=Array.from(inputServiciosIds.selectedOptions).map(option=>Number(option.value));
 
     if(nombre.length<2){
 
@@ -305,13 +326,10 @@ function validarPromocion() {
     }
 
     if(serviciosIds.length===0){
-
-        mostrarAlerta(
-            "✗ Debes introducir al menos un ID de servicio válido.",
-            "danger"
-        );
+        mostrarAlerta("✗ Debes seleccionar al menos un servicio.","danger");
         return false;
     }
     return true;
+
 
 }

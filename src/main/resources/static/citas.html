@@ -15,6 +15,8 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap"
           rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -33,49 +35,64 @@
         <div class="card-body">
             <form id="formularioCita">
 
-                <div class="mb-3">
-                    <label for="fechaHora" class="form-label">Fecha y hora</label>
-                    <input type="datetime-local" class="form-control" id="fechaHora" required>
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label for="fechaHora" class="form-label">Fecha y hora</label>
+                        <input type="datetime-local"
+                               class="form-control"
+                               id="fechaHora"
+                               required>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="estado" class="form-label">Estado</label>
+                        <select class="form-select" id="estado" required>
+                            <option value="PENDIENTE">PENDIENTE</option>
+                            <option value="CONFIRMADA">CONFIRMADA</option>
+                            <option value="CANCELADA">CANCELADA</option>
+                            <option value="REALIZADA">REALIZADA</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="clienteId" class="form-label">Cliente</label>
+                        <select class="form-select" id="clienteId" required>
+                            <option value="">Selecciona un cliente</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="empleadoId" class="form-label">Empleado</label>
+                        <select class="form-select" id="empleadoId" required>
+                            <option value="">Selecciona un empleado</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="servicioId" class="form-label">Servicio</label>
+                        <select class="form-select" id="servicioId" required>
+                            <option value="">Selecciona un servicio</option>
+                        </select>
+                    </div>
+
                 </div>
 
-                <div class="mb-3">
-                    <label for="estado" class="form-label">Estado</label>
-                    <select class="form-select" id="estado" required>
-                        <option value="PENDIENTE">PENDIENTE</option>
-                        <option value="CONFIRMADA">CONFIRMADA</option>
-                        <option value="CANCELADA">CANCELADA</option>
-                        <option value="REALIZADA">REALIZADA</option>
-                    </select>
+                <div class="text-end mt-3">
+
+                    <button type="submit"
+                            class="btn btn-primary"
+                            id="botonGuardarCita">
+                        Crear cita
+                    </button>
+
+                    <button type="button"
+                            class="btn btn-secondary d-none"
+                            id="botonCancelarEdicion">
+                        Cancelar edición
+                    </button>
+
                 </div>
-
-                <div class="mb-3">
-                    <label for="clienteId" class="form-label">Cliente</label>
-                    <select class="form-select" id="clienteId" required>
-                        <option value="">Selecciona un cliente</option>
-                    </select>
-                </div>
-
-                <div class="mb-3">
-                    <label for="empleadoId" class="form-label">Empleado</label>
-                    <select class="form-select" id="empleadoId" required>
-                        <option value="">Selecciona un empleado</option>
-                    </select>
-                </div>
-
-                <div class="mb-3">
-                    <label for="servicioId" class="form-label">Servicio</label>
-                    <select class="form-select" id="servicioId" required>
-                        <option value="">Selecciona un servicio</option>
-                    </select>
-                </div>
-
-                <button type="submit" class="btn btn-primary" id="botonGuardarCita">
-                    Crear cita
-                </button>
-
-                <button type="button" class="btn btn-secondary d-none" id="botonCancelarEdicion">
-                    Cancelar edición
-                </button>
 
             </form>
         </div>
@@ -164,6 +181,7 @@
 
 <script src="js/layout.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 <script src="js/utils.js"></script>
 <script src="js/citas.js"></script>
 

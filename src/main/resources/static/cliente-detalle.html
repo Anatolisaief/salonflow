@@ -23,34 +23,64 @@
         <div class="card-header">Añadir historial</div>
         <div class="card-body">
             <form id="formularioHistorial">
-                <div class="mb-3">
-                    <label for="fecha" class="form-label">Fecha</label>
-                    <input type="date" class="form-control" id="fecha">
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label for="fecha" class="form-label">Fecha</label>
+                        <input type="date" class="form-control" id="fecha">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="servicioId" class="form-label">Servicio</label>
+                        <select class="form-select" id="servicioId">
+                            <option value="">Sin servicio seleccionado</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="tecnica" class="form-label">Técnica</label>
+                        <input type="text" class="form-control" id="tecnica">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="colorAplicado" class="form-label">Color aplicado</label>
+                        <input type="text" class="form-control" id="colorAplicado">
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="productosAplicados" class="form-label">Productos aplicados</label>
+                        <input type="text" class="form-control" id="productosAplicados">
+                    </div>
+
+                    <div class="col-12 mb-3">
+                        <label for="observacionesHistorial" class="form-label">Observaciones</label>
+                        <textarea
+                                class="form-control"
+                                id="observacionesHistorial"
+                                rows="3"></textarea>
+                    </div>
+
                 </div>
-                <div class="mb-3">
-                    <label for="servicioId" class="form-label">Servicio</label>
-                    <select class="form-select" id="servicioId">
-                        <option value="">Sin servicio seleccionado</option>
-                    </select>
+
+                <div class="d-flex justify-content-end gap-2 mt-3">
+
+                    <button
+                            type="button"
+                            class="btn btn-secondary d-none"
+                            id="botonCancelarEdicionHistorial">
+                        Cancelar edición
+                    </button>
+
+                    <button
+                            type="submit"
+                            class="btn btn-primary"
+                            id="botonGuardarHistorial">
+                        Añadir historial
+                    </button>
+
                 </div>
-                <div class="mb-3">
-                    <label for="tecnica" class="form-label">Técnica</label>
-                    <input type="text" class="form-control" id="tecnica">
-                </div>
-                <div class="mb-3">
-                    <label for="colorAplicado" class="form-label">Color aplicado</label>
-                    <input type="text" class="form-control" id="colorAplicado">
-                </div>
-                <div class="mb-3">
-                    <label for="productosAplicados" class="form-label">Productos aplicados</label>
-                    <input type="text" class="form-control" id="productosAplicados">
-                </div>
-                <div class="mb-3">
-                    <label for="observacionesHistorial" class="form-label">Observaciones</label>
-                    <textarea class="form-control" id="observacionesHistorial" rows="3"></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary" id="botonGuardarHistorial">Añadir historial</button>
-                <button type="button" class="btn btn-secondary d-none" id="botonCancelarEdicionHistorial">Cancelar edición</button>
+
             </form>
         </div>
     </div>

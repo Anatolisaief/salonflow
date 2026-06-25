@@ -351,6 +351,12 @@ a .card:hover {
     margin-bottom: 0;
 }
 
+.table th,
+.table td{
+    text-align:center;
+    vertical-align:middle;
+}
+
 .table thead th {
     background-color: var(--color-tabla);
         color: var(--color-texto-card);

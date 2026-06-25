@@ -48,71 +48,84 @@
         </div>
         <div class="card-body">
             <form id="formularioCliente">
-                <div class="mb-3">
-                    <label
-                            for="nombre"
-                            class="form-label">
-                        Nombre
-                    </label>
 
-                    <input
-                            type="text"
-                            class="form-control"
-                            id="nombre"
-                            required>
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label for="nombre" class="form-label">Nombre</label>
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="nombre"
+                                required>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="telefono" class="form-label">Teléfono</label>
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="telefono"
+                                required>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input
+                                type="email"
+                                class="form-control"
+                                id="email"
+                                required>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="fechaNacimiento" class="form-label">
+                            Fecha de nacimiento
+                        </label>
+                        <input
+                                type="date"
+                                class="form-control"
+                                id="fechaNacimiento">
+                    </div>
+
+                    <div class="col-12 mb-3">
+                        <label for="alergias" class="form-label">Alergias</label>
+                        <input
+                                type="text"
+                                class="form-control"
+                                id="alergias">
+                    </div>
+
+                    <div class="col-12 mb-3">
+                        <label for="observaciones" class="form-label">
+                            Observaciones
+                        </label>
+                        <textarea
+                                class="form-control"
+                                id="observaciones"
+                                rows="3"></textarea>
+                    </div>
+
                 </div>
 
+                <div class="d-flex justify-content-end gap-2 mt-3">
 
-                <div class="mb-3">
-                    <label
-                            for="telefono"
-                            class="form-label">
-                        Teléfono
-                    </label>
+                    <button
+                            type="button"
+                            class="btn btn-secondary d-none"
+                            id="botonCancelarEdicion">
+                        Cancelar edición
+                    </button>
 
-                    <input
-                            type="text"
-                            class="form-control"
-                            id="telefono"
-                            required>
+                    <button
+                            type="submit"
+                            class="btn btn-primary"
+                            id="botonGuardarCliente">
+                        Crear cliente
+                    </button>
+
                 </div>
 
-
-                <div class="mb-3">
-                    <label
-                            for="email"
-                            class="form-label">
-                        Email
-                    </label>
-                    <input
-                            type="email"
-                            class="form-control"
-                            id="email"
-                            required>
-                </div>
-                <div class="mb-3">
-                    <label for="fechaNacimiento" class="form-label">Fecha de nacimiento</label>
-                    <input type="date" class="form-control" id="fechaNacimiento">
-                </div>
-
-                <div class="mb-3">
-                    <label for="alergias" class="form-label">Alergias</label>
-                    <input type="text" class="form-control" id="alergias">
-                </div>
-
-                <div class="mb-3">
-                    <label for="observaciones" class="form-label">Observaciones</label>
-                    <textarea class="form-control" id="observaciones" rows="3"></textarea>
-                </div>
-
-
-                <button type="submit" class="btn btn-primary" id="botonGuardarCliente">
-                    Crear cliente
-                </button>
-
-                <button type="button" class="btn btn-secondary d-none" id="botonCancelarEdicion">
-                    Cancelar edición
-                </button>
             </form>
         </div>
     </div>
