@@ -61,12 +61,35 @@ function cargarCliente(){
 
 function mostrarCliente(cliente){
     datosCliente.innerHTML=`
-        <p><strong>Nombre:</strong> ${cliente.nombre}</p>
-        <p><strong>Teléfono:</strong> ${cliente.telefono}</p>
-        <p><strong>Email:</strong> ${cliente.email}</p>
-        <p><strong>Fecha de nacimiento:</strong> ${cliente.fechaNacimiento||"No indicada"}</p>
-        <p><strong>Alergias:</strong> ${cliente.alergias||"No indicadas"}</p>
-        <p><strong>Observaciones:</strong> ${cliente.observaciones||"Sin observaciones"}</p>
+        <p>
+            <i class="bi bi-person me-2"></i>
+            <strong>Nombre:</strong> ${cliente.nombre}
+        </p>
+
+        <p>
+            <i class="bi bi-telephone me-2"></i>
+            <strong>Teléfono:</strong> ${cliente.telefono}
+        </p>
+
+        <p>
+            <i class="bi bi-envelope me-2"></i>
+            <strong>Email:</strong> ${cliente.email}
+        </p>
+
+        <p>
+            <i class="bi bi-cake2 me-2"></i>
+            <strong>Fecha de nacimiento:</strong> ${cliente.fechaNacimiento || "No indicada"}
+        </p>
+
+        <p>
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            <strong>Alergias:</strong> ${cliente.alergias || "No indicadas"}
+        </p>
+
+        <p>
+            <i class="bi bi-card-text me-2"></i>
+            <strong>Observaciones:</strong> ${cliente.observaciones || "Sin observaciones"}
+        </p>
     `;
 }
 

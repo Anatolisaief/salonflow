@@ -69,6 +69,7 @@ footer {
     text-decoration: underline;
 }
 
+
 /* Títulos */
 
 h1 {
@@ -184,7 +185,10 @@ h5 {
     margin:0;
 }
 
-
+#datosCliente i{
+    color: var(--color-principal);
+    width:22px;
+}
 
 
 /* Dashboard */
