@@ -6,14 +6,18 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.authentication.AuthenticationProvider;
+
 import org.springframework.http.HttpMethod;
 
+
 @Configuration
+@EnableMethodSecurity
 public class SecurityConfig{
 
     private final UsuarioDetailsService usuarioDetailsService;
@@ -45,7 +49,6 @@ public class SecurityConfig{
         http
                 .csrf(csrf->csrf.disable())
                 .authorizeHttpRequests(auth->auth
-
                         .requestMatchers(
                                 "/css/**",
                                 "/js/**",
@@ -54,32 +57,15 @@ public class SecurityConfig{
                                 "/acceso-denegado.html"
                         ).permitAll()
 
-                        // EMPLEADO y ADMIN pueden consultar listas
-                        .requestMatchers(HttpMethod.GET,
-                                "/empleados/**",
-                                "/productos/**",
-                                "/promociones/**"
-                        ).hasAnyRole("ADMIN","EMPLEADO")
-
-                        // Solo ADMIN puede acceder a estas páginas y modificar datos
-                        .requestMatchers(
-                                "/empleados.html",
-                                "/productos.html",
-                                "/promociones.html",
-                                "/empleados/**",
-                                "/productos/**",
-                                "/promociones/**"
-                        ).hasRole("ADMIN")
-
                         .requestMatchers(
                                 "/index.html",
                                 "/clientes.html",
                                 "/cliente-detalle.html",
                                 "/citas.html",
                                 "/servicios.html",
-                                "/clientes/**",
-                                "/citas/**",
-                                "/servicios/**"
+                                "/empleados.html",
+                                "/productos.html",
+                                "/promociones.html"
                         ).hasAnyRole("ADMIN","EMPLEADO")
 
                         .anyRequest().authenticated()

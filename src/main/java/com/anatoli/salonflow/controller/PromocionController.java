@@ -7,10 +7,12 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import java.util.List;
 
 @RestController
 @RequestMapping("/promociones")
+@PreAuthorize("hasAnyRole('ADMIN','EMPLEADO')")
 public class PromocionController {
 
     private final PromocionRepository promocionRepository;
@@ -29,6 +31,7 @@ public class PromocionController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public Promocion crearPromocion(
             @Valid @RequestBody PromocionRequest request) {
 
@@ -60,6 +63,7 @@ public class PromocionController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public Promocion actualizarPromocion(
             @PathVariable Long id,
             @Valid @RequestBody PromocionRequest request) {
@@ -89,6 +93,7 @@ public class PromocionController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void eliminarPromocion(@PathVariable Long id) {
         promocionRepository.deleteById(id);
     }

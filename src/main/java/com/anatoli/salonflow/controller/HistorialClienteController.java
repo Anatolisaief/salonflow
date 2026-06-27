@@ -4,12 +4,14 @@ import com.anatoli.salonflow.model.HistorialCliente;
 import com.anatoli.salonflow.repository.ClienteRepository;
 import com.anatoli.salonflow.repository.HistorialClienteRepository;
 import com.anatoli.salonflow.repository.ServicioRepository;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping("/clientes/{clienteId}/historial")
+@PreAuthorize("hasAnyRole('ADMIN','EMPLEADO')")
 public class HistorialClienteController{
     private final HistorialClienteRepository historialRepository;
     private final ClienteRepository clienteRepository;
@@ -81,6 +83,7 @@ public class HistorialClienteController{
     }
 
     @DeleteMapping("/{historialId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void eliminarHistorial(@PathVariable Long historialId){
         historialRepository.deleteById(historialId);
     }

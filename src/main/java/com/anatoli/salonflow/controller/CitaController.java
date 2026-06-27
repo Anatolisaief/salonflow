@@ -12,10 +12,12 @@ import com.anatoli.salonflow.model.Servicio;
 import com.anatoli.salonflow.model.Empleado;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import java.util.List;
 
 @RestController
 @RequestMapping("/citas")
+@PreAuthorize("hasAnyRole('ADMIN','EMPLEADO')")
 public class CitaController {
 
     private final CitaRepository citaRepository;
@@ -87,6 +89,7 @@ public class CitaController {
 
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void eliminarCita(@PathVariable Long id) {
         citaRepository.deleteById(id);
     }

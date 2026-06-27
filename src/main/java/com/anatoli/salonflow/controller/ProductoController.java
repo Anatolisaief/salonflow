@@ -3,11 +3,13 @@ package com.anatoli.salonflow.controller;
 import com.anatoli.salonflow.model.Producto;
 import com.anatoli.salonflow.repository.ProductoRepository;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 import jakarta.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping("/productos")
+@PreAuthorize("hasAnyRole('ADMIN','EMPLEADO')")
 public class ProductoController {
 
     private final ProductoRepository productoRepository;
@@ -22,6 +24,7 @@ public class ProductoController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public Producto crearProducto(@Valid @RequestBody Producto producto) {
         return productoRepository.save(producto);
     }
@@ -42,6 +45,7 @@ public class ProductoController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public Producto actualizarProducto(
             @PathVariable Long id,
             @Valid @RequestBody Producto productoActualizado) {
@@ -56,6 +60,7 @@ public class ProductoController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void eliminarProducto(@PathVariable Long id) {
         productoRepository.deleteById(id);
     }

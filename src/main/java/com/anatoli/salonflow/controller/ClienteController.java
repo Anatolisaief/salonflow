@@ -3,12 +3,14 @@ package com.anatoli.salonflow.controller;
 import com.anatoli.salonflow.model.Cliente;
 import com.anatoli.salonflow.repository.ClienteRepository;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 import jakarta.validation.Valid;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/clientes")
+@PreAuthorize("hasAnyRole('ADMIN','EMPLEADO')")
 public class ClienteController {
 
     private final ClienteRepository clienteRepository;
@@ -48,6 +50,7 @@ public class ClienteController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void eliminarCliente(@PathVariable Long id) {
         clienteRepository.deleteById(id);
     }

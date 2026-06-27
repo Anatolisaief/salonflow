@@ -7,25 +7,24 @@ function abrirModalEliminar(id,funcion){
     funcionEliminar=funcion;
 
     const modalElemento=document.getElementById("modalEliminar");
+    const botonConfirmar=document.getElementById("btnConfirmarEliminar");
+
+    botonConfirmar.onclick=function(){
+        if(funcionEliminar&&idEliminar!==null){
+            funcionEliminar(idEliminar);
+        }
+
+        bootstrap.Modal.getOrCreateInstance(modalElemento).hide();
+
+        idEliminar=null;
+        funcionEliminar=null;
+    };
+
     modalEliminar=bootstrap.Modal.getOrCreateInstance(modalElemento);
     modalEliminar.show();
 }
 
-document.addEventListener("DOMContentLoaded",()=>{
-    const botonConfirmar=document.getElementById("btnConfirmarEliminar");
 
-    if(botonConfirmar){
-        botonConfirmar.addEventListener("click",()=>{
-            if(funcionEliminar&&idEliminar!==null){
-                funcionEliminar(idEliminar);
-            }
-
-            bootstrap.Modal.getOrCreateInstance(document.getElementById("modalEliminar")).hide();
-            idEliminar=null;
-            funcionEliminar=null;
-        });
-    }
-});
 
 function formatearHora(hora) {
     if (!hora) {

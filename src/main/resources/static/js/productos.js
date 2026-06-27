@@ -185,7 +185,7 @@ function actualizarProducto() {
 }
 
 function eliminarProducto(id) {
-
+    console.log("Eliminando producto con id:",id);
     fetch(`${API_PRODUCTOS}/${id}`,{
         method:"DELETE"
     })
