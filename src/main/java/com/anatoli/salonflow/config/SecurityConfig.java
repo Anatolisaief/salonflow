@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.http.HttpMethod;
 
 @Configuration
 public class SecurityConfig{
@@ -44,17 +45,59 @@ public class SecurityConfig{
         http
                 .csrf(csrf->csrf.disable())
                 .authorizeHttpRequests(auth->auth
-                        .requestMatchers("/css/**","/js/**","/img/**","/login.html").permitAll()
-                        .requestMatchers("/empleados/**","/productos/**","/promociones/**").hasRole("ADMIN")
-                        .requestMatchers("/clientes/**","/citas/**","/servicios/**").hasAnyRole("ADMIN","EMPLEADO")
+
+                        .requestMatchers(
+                                "/css/**",
+                                "/js/**",
+                                "/img/**",
+                                "/login.html",
+                                "/acceso-denegado.html"
+                        ).permitAll()
+
+                        // EMPLEADO y ADMIN pueden consultar listas
+                        .requestMatchers(HttpMethod.GET,
+                                "/empleados/**",
+                                "/productos/**",
+                                "/promociones/**"
+                        ).hasAnyRole("ADMIN","EMPLEADO")
+
+                        // Solo ADMIN puede acceder a estas páginas y modificar datos
+                        .requestMatchers(
+                                "/empleados.html",
+                                "/productos.html",
+                                "/promociones.html",
+                                "/empleados/**",
+                                "/productos/**",
+                                "/promociones/**"
+                        ).hasRole("ADMIN")
+
+                        .requestMatchers(
+                                "/index.html",
+                                "/clientes.html",
+                                "/cliente-detalle.html",
+                                "/citas.html",
+                                "/servicios.html",
+                                "/clientes/**",
+                                "/citas/**",
+                                "/servicios/**"
+                        ).hasAnyRole("ADMIN","EMPLEADO")
+
                         .anyRequest().authenticated()
                 )
+                .exceptionHandling(exception->exception
+                        .accessDeniedPage("/acceso-denegado.html")
+                )
+
                 .formLogin(form->form
                         .loginPage("/login.html")
+                        .loginProcessingUrl("/login")
+                        .defaultSuccessUrl("/index.html",true)
+                        .failureUrl("/login.html?error")
                         .permitAll()
                 )
                 .logout(logout->logout
-                        .logoutSuccessUrl("/login.html")
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login.html?logout")
                         .permitAll()
                 );
 
