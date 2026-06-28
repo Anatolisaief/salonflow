@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuarios | SalonFlow</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="header"></div>
+
+<main class="container my-5">
+
+    <h1 class="mb-4">Usuarios</h1>
+    <div id="contenedorAlertas"></div>
+
+    <div class="card">
+        <div class="card-header">Crear usuario</div>
+
+        <div class="card-body">
+            <form id="formularioUsuario">
+
+                <div class="row">
+
+                    <div class="col-md-4 mb-3">
+                        <label for="username" class="form-label">Usuario</label>
+                        <input type="text" class="form-control" id="username" required>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label for="password" class="form-label">Contraseña</label>
+                        <input type="password" class="form-control" id="password" required>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label for="rol" class="form-label">Rol</label>
+                        <select class="form-select" id="rol" required>
+                            <option value="ADMIN">ADMIN</option>
+                            <option value="EMPLEADO">EMPLEADO</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 mt-3">
+
+                    <button
+                            type="button"
+                            class="btn btn-secondary d-none"
+                            id="botonCancelarEdicionUsuario">
+                        Cancelar edición
+                    </button>
+
+                    <button
+                            type="submit"
+                            class="btn btn-primary"
+                            id="botonGuardarUsuario">
+                        Crear usuario
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <div class="card mt-5">
+        <div class="card-header">Lista de usuarios</div>
+
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Usuario</th>
+                    <th>Rol</th>
+                    <th>Acciones</th>
+                </tr>
+                </thead>
+
+                <tbody id="tablaUsuarios"></tbody>
+            </table>
+        </div>
+    </div>
+
+</main>
+
+<div id="footer"></div>
+
+<script src="js/layout.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/usuarios.js"></script>
+
+</body>
+</html>

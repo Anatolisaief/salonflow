@@ -47,6 +47,11 @@ function mostrarServicios(servicios){
     servicios.sort((a,b)=>a.id-b.id);
     servicios.forEach(servicio=>{
         const fila=document.createElement("tr");
+        const botonEliminar = window.usuarioActual?.rol === "ADMIN"
+        ? `
+         <button class="btn btn-eliminar" onclick="abrirModalEliminar(${servicio.id},eliminarServicio)">Eliminar</button>
+         `
+         : "";
         fila.innerHTML=`
             <td>${servicio.id}</td>
             <td>${servicio.nombre}</td>
@@ -54,7 +59,8 @@ function mostrarServicios(servicios){
             <td>${servicio.duracion} min</td>
             <td>
                 <button class="btn btn-editar" onclick="prepararEdicionServicio(${servicio.id})">Editar</button>
-                <button class="btn btn-eliminar" onclick="abrirModalEliminar(${servicio.id},eliminarServicio)">Eliminar</button>
+                ${botonEliminar}
+
             </td>
         `;
         tablaServicios.appendChild(fila);

@@ -113,6 +113,15 @@ function mostrarClientes(clientes) {
 
     clientes.forEach(cliente => {
         const fila = document.createElement("tr");
+        const botonEliminar = window.usuarioActual?.rol === "ADMIN"
+                    ? `
+                        <button class="btn btn-eliminar"
+                                onclick="abrirModalEliminar(${cliente.id},eliminarCliente)">
+                            Eliminar
+                        </button>
+                    `
+                    : "";
+
 
         fila.innerHTML = `
             <td>${cliente.id}</td>
@@ -131,10 +140,7 @@ function mostrarClientes(clientes) {
                     Editar
                 </button>
 
-                <button class="btn btn-eliminar"
-                       onclick="abrirModalEliminar(${cliente.id},eliminarCliente)">
-                    Eliminar
-                </button>
+                ${botonEliminar}
             </td>
         `;
 

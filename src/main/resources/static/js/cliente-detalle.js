@@ -112,8 +112,19 @@ function cargarHistorial(){
 
 function mostrarHistorial(historial){
     tablaHistorial.innerHTML="";
+
     historial.forEach(item=>{
         const fila=document.createElement("tr");
+
+        const botonEliminar=window.usuarioActual?.rol==="ADMIN"
+            ? `
+                <button class="btn btn-eliminar"
+                        onclick="abrirModalEliminar(${item.id},eliminarHistorial)">
+                    Eliminar
+                </button>
+            `
+            : "";
+
         fila.innerHTML=`
             <td>${item.fecha||""}</td>
             <td>${item.servicio?item.servicio.nombre:""}</td>
@@ -122,10 +133,15 @@ function mostrarHistorial(historial){
             <td>${item.productosAplicados||""}</td>
             <td>${item.observaciones||""}</td>
             <td>
-                <button class="btn btn-editar" onclick="prepararEdicionHistorial(${item.id})">Editar</button>
-                <button class="btn btn-eliminar" onclick="abrirModalEliminar(${item.id},eliminarHistorial)">Eliminar</button>
+                <button class="btn btn-editar"
+                        onclick="prepararEdicionHistorial(${item.id})">
+                    Editar
+                </button>
+
+                ${botonEliminar}
             </td>
         `;
+
         tablaHistorial.appendChild(fila);
     });
 }

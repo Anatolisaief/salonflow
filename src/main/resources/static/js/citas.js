@@ -158,6 +158,11 @@ function mostrarCitas(citas){
     citas.sort((a,b)=>a.id-b.id);
     citas.forEach(cita=>{
         const fila=document.createElement("tr");
+        const botonEliminar = window.usuarioActual?.rol === "ADMIN"
+        ? `
+         <button class="btn btn-eliminar" onclick="abrirModalEliminar(${cita.id},eliminarCita)">Eliminar</button>
+         `
+         : "";
         fila.innerHTML=`
             <td>${cita.id}</td>
             <td>${formatearFecha(cita.fechaHora)}</td>
@@ -169,9 +174,7 @@ function mostrarCitas(citas){
                 <button class="btn btn-editar" onclick="prepararEdicionCita(${cita.id})">
                     Editar
                 </button>
-                <button class="btn btn-eliminar" onclick="abrirModalEliminar(${cita.id},eliminarCita)">
-                    Eliminar
-                </button>
+                ${botonEliminar}
             </td>
         `;
         tablaCitas.appendChild(fila);
