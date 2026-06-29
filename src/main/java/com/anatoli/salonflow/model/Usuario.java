@@ -17,6 +17,10 @@ public class Usuario {
     @Enumerated(EnumType.STRING)
     private Rol rol;
 
+    @OneToOne
+    @JoinColumn(name = "empleado_id", nullable = true)
+    private Empleado empleado;
+
     public Usuario(){}
 
     public Long getId(){return id;}
@@ -29,4 +33,12 @@ public class Usuario {
 
     public Rol getRol(){return rol;}
     public void setRol(Rol rol){this.rol=rol;}
+
+    public Empleado getEmpleado() {
+        return empleado;
+    }
+
+    public void setEmpleado(Empleado empleado) {
+        this.empleado = empleado;
+    }
 }

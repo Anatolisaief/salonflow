@@ -67,6 +67,7 @@ public class SecurityConfig{
                                 "/productos.html",
                                 "/promociones.html",
                                 "/usuarios.html",
+                                "/perfil.html",
                                 "/auth/me"
                         ).hasAnyRole("ADMIN","EMPLEADO")
 

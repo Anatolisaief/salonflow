@@ -17,6 +17,8 @@ public class UsuarioRequest{
     @NotNull(message="El rol es obligatorio.")
     private Rol rol;
 
+    private Long empleadoId;
+
     public String getUsername(){return username;}
     public void setUsername(String username){this.username=username;}
 
@@ -25,4 +27,12 @@ public class UsuarioRequest{
 
     public Rol getRol(){return rol;}
     public void setRol(Rol rol){this.rol=rol;}
+
+    public Long getEmpleadoId() {
+        return empleadoId;
+    }
+
+    public void setEmpleadoId(Long empleadoId) {
+        this.empleadoId = empleadoId;
+    }
 }

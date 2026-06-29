@@ -11,6 +11,21 @@ fetch("header.html")
         }
     });
     aplicarPermisosMenu();
+    const botonUsuario=document.getElementById("botonUsuario");
+    const menuUsuario=document.getElementById("menuUsuario");
+
+    if(botonUsuario && menuUsuario){
+        botonUsuario.addEventListener("click",event=>{
+            event.stopPropagation();
+            menuUsuario.classList.toggle("activo");
+        });
+
+        document.addEventListener("click",event=>{
+            if(!menuUsuario.contains(event.target) && !botonUsuario.contains(event.target)){
+                menuUsuario.classList.remove("activo");
+            }
+        });
+    }
 });
 
 
@@ -30,6 +45,16 @@ function aplicarPermisosMenu(){
         })
         .then(usuario=>{
             window.usuarioActual=usuario;
+            const nombre=document.getElementById("usuarioNavbarNombre");
+            const rol=document.getElementById("usuarioNavbarRol");
+
+            if(nombre){
+                nombre.textContent=usuario.nombreMostrado;
+            }
+
+            if(rol){
+                rol.textContent=usuario.rol;
+            }
 
             if(usuario.rol!=="ADMIN"){
                 document.querySelectorAll(".admin-only").forEach(elemento=>{

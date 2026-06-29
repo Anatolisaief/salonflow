@@ -1,4 +1,5 @@
 const API_USUARIOS="http://localhost:8080/usuarios";
+const API_EMPLEADOS = "http://localhost:8080/empleados";
 
 const formularioUsuario=document.getElementById("formularioUsuario");
 const tablaUsuarios=document.getElementById("tablaUsuarios");
@@ -6,13 +7,17 @@ const tablaUsuarios=document.getElementById("tablaUsuarios");
 const inputUsername=document.getElementById("username");
 const inputPassword=document.getElementById("password");
 const inputRol=document.getElementById("rol");
+const inputEmpleado = document.getElementById("empleado");
 const botonGuardarUsuario=document.getElementById("botonGuardarUsuario");
 const botonCancelarEdicionUsuario=document.getElementById("botonCancelarEdicionUsuario");
 
 let listaUsuarios=[];
 let usuarioEditandoId = null;
 
-document.addEventListener("DOMContentLoaded",cargarUsuarios);
+document.addEventListener("DOMContentLoaded", () => {
+    cargarUsuarios();
+    cargarEmpleados();
+});
 
 formularioUsuario.addEventListener("submit",event=>{
     event.preventDefault();
@@ -52,21 +57,22 @@ function mostrarUsuarios(usuarios){
     usuarios.forEach(usuario=>{
         const fila=document.createElement("tr");
 
-        fila.innerHTML=`
-            <td>${usuario.id}</td>
-            <td>${usuario.username}</td>
-            <td>${usuario.rol}</td>
-            <td>
-                <button class="btn btn-editar"
-                        onclick="prepararEdicionUsuario(${usuario.id})">
-                    Editar
-                </button>
-                <button class="btn btn-eliminar"
-                        onclick="abrirModalEliminar(${usuario.id},eliminarUsuario)">
-                    Eliminar
-                </button>
-            </td>
-        `;
+       fila.innerHTML=`
+           <td>${usuario.id}</td>
+           <td>${usuario.username}</td>
+           <td>${usuario.rol}</td>
+           <td>${usuario.empleadoNombre ?? "Sin empleado"}</td>
+           <td>
+               <button class="btn btn-editar"
+                       onclick="prepararEdicionUsuario(${usuario.id})">
+                   Editar
+               </button>
+               <button class="btn btn-eliminar"
+                       onclick="abrirModalEliminar(${usuario.id},eliminarUsuario)">
+                   Eliminar
+               </button>
+           </td>
+       `;
 
         tablaUsuarios.appendChild(fila);
     });
@@ -80,7 +86,8 @@ function crearUsuario(){
     const nuevoUsuario={
         username:inputUsername.value.trim(),
         password:inputPassword.value.trim(),
-        rol:inputRol.value
+        rol:inputRol.value,
+        empleadoId:inputEmpleado.value==="" ? null : Number(inputEmpleado.value)
     };
 
     fetch(API_USUARIOS,{
@@ -133,6 +140,7 @@ function prepararEdicionUsuario(id){
     inputUsername.value = usuario.username;
     inputRol.value = usuario.rol;
     inputPassword.value = "";
+    inputEmpleado.value = usuario.empleadoId ?? "";
 
     usuarioEditandoId = id;
 
@@ -153,6 +161,7 @@ function cancelarEdicionUsuario(){
     usuarioEditandoId=null;
 
     formularioUsuario.reset();
+    inputEmpleado.value="";
 
     botonGuardarUsuario.textContent="Crear usuario";
     botonGuardarUsuario.classList.remove("btn-success");
@@ -166,7 +175,8 @@ function actualizarUsuario(){
     const usuario={
         username:inputUsername.value.trim(),
         password:inputPassword.value.trim(),
-        rol:inputRol.value
+        rol:inputRol.value,
+        empleadoId:inputEmpleado.value==="" ? null : Number(inputEmpleado.value)
     };
 
     fetch(`${API_USUARIOS}/${usuarioEditandoId}`,{
@@ -226,4 +236,38 @@ function validarUsuario(){
     }
 
     return true;
+}
+
+function cargarEmpleados(){
+
+    fetch(API_EMPLEADOS)
+        .then(response=>{
+            if(!response.ok){
+                throw new Error();
+            }
+            return response.json();
+        })
+        .then(empleados=>{
+
+            inputEmpleado.innerHTML=
+                `<option value="">Ninguno</option>`;
+
+            empleados.sort((a,b)=>a.nombre.localeCompare(b.nombre));
+
+            empleados.forEach(empleado=>{
+
+                inputEmpleado.innerHTML+=`
+                    <option value="${empleado.id}">
+                        ${empleado.nombre}
+                    </option>
+                `;
+
+            });
+
+        })
+        .catch(error=>{
+            console.error("Error al cargar empleados:",error);
+            mostrarAlerta("✗ Error al cargar los empleados.","danger");
+        });
+
 }

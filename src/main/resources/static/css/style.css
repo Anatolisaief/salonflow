@@ -54,22 +54,83 @@ footer {
     font-family: "Quicksand", sans-serif;
     font-size: 1.7rem;
     font-weight: 800;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
 }
 
-.nav-link {
-    font-weight: 600;
-    color: white !important;
-    opacity: 0.9;
+.nav-link{
+    font-weight:600;
+    color:white !important;
+    opacity:.9;
+    border-radius:999px;
+    padding:8px 14px !important;
+    transition:.25s;
 }
 
-.nav-link:hover,
-.nav-link.active {
-    opacity: 1;
-    text-decoration: underline;
+.nav-link:hover{
+    opacity:1;
+    background:rgba(255,255,255,.12);
 }
 
+.nav-link.active{
+    background:rgba(255,255,255,.22);
+    opacity:1;
+}
 
+#botonUsuario{
+    color:white;
+    height:40px;
+}
+
+#botonUsuario i{
+    font-size:1.8rem;
+    transition:.2s;
+}
+
+#botonUsuario:hover{
+    color:white;
+    opacity:.8;
+}
+
+.menu-usuario{
+    position:absolute;
+    top:48px;
+    right:0;
+    min-width:220px;
+    background:#fffaf6;
+    border:1px solid #f3cfc3;
+    border-radius:18px;
+    box-shadow:0 12px 30px rgba(0,0,0,.15);
+    padding:14px;
+    z-index:1000;
+    opacity:0;
+    transform:translateY(-8px);
+    pointer-events:none;
+    transition:opacity .2s ease, transform .2s ease;
+}
+
+.menu-usuario.activo{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+}
+
+.menu-usuario hr{
+    margin:10px 0;
+    border-color:#f3cfc3;
+}
+
+.menu-usuario-btn{
+    width:100%;
+    border:0;
+    background:transparent;
+    text-align:left;
+    padding:8px 4px;
+    color:#333;
+}
+
+.menu-usuario-btn:hover{
+    color:#ff8678;
+}
 /* Títulos */
 
 h1 {

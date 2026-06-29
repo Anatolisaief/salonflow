@@ -23,6 +23,35 @@
                 <li class="nav-item admin-only">
                     <a class="nav-link" href="usuarios.html">Usuarios</a>
                 </li>
+
+
+                <li class="nav-item ms-lg-3 position-relative">
+                    <a class="nav-link d-flex align-items-center"
+                       href="javascript:void(0)"
+                       id="botonUsuario">
+                        <i class="bi bi-person-circle fs-4"></i>
+                    </a>
+
+                    <div id="menuUsuario" class="menu-usuario">
+                        <div class="menu-usuario-header">
+                            <div id="usuarioNavbarNombre" class="fw-bold"></div>
+                            <small id="usuarioNavbarRol" class="text-muted"></small>
+                        </div>
+
+                        <hr>
+
+                        <form method="post" action="/logout">
+                            <a href="perfil.html" class="menu-usuario-btn d-block text-decoration-none">
+                                <i class="bi bi-person me-2"></i>
+                                Mi perfil
+                            </a>
+                            <button class="menu-usuario-btn">
+                                <i class="bi bi-box-arrow-right me-2"></i>
+                                Cerrar sesión
+                            </button>
+                        </form>
+                    </div>
+                </li>
             </ul>
         </div>
     </div>
