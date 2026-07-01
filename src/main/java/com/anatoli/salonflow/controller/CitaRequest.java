@@ -8,7 +8,6 @@ import jakarta.validation.constraints.NotNull;
 public class CitaRequest {
 
     @NotNull(message = "La fecha y hora es obligatoria.")
-    @FutureOrPresent(message = "La cita no puede tener una fecha pasada.")
     private LocalDateTime fechaHora;
 
     @NotNull(message = "El estado es obligatorio.")

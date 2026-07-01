@@ -99,6 +99,12 @@ public class CitaController {
             @PathVariable Long id,
             @Valid @RequestBody CitaRequest request) {
 
+        Cita cita = citaRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "La cita no existe."
+                ));
+
         Cliente cliente = clienteRepository.findById(request.getClienteId())
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.BAD_REQUEST,
@@ -116,10 +122,17 @@ public class CitaController {
                         HttpStatus.BAD_REQUEST,
                         "El empleado no existe."
                 ));
-        if (citaRepository.existsByEmpleadoIdAndFechaHoraAndIdNot(
-                request.getEmpleadoId(),
-                request.getFechaHora(),
-                id)) {
+
+        //un empleado no puede tener dos citas a la misma hora
+        boolean cambiaEmpleadoOFecha =
+                !cita.getEmpleado().getId().equals(request.getEmpleadoId())
+                        || !cita.getFechaHora().equals(request.getFechaHora());
+
+        if(cambiaEmpleadoOFecha &&
+                citaRepository.existsByEmpleadoIdAndFechaHoraAndIdNot(
+                        request.getEmpleadoId(),
+                        request.getFechaHora(),
+                        id)) {
 
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
@@ -127,16 +140,12 @@ public class CitaController {
             );
         }
 
-        return citaRepository.findById(id).map(cita -> {
-            cita.setFechaHora(request.getFechaHora());
-            cita.setEstado(request.getEstado());
-            cita.setCliente(cliente);
-            cita.setServicio(servicio);
-            cita.setEmpleado(empleado);
-            return citaRepository.save(cita);
-        }).orElseThrow(() -> new ResponseStatusException(
-                HttpStatus.NOT_FOUND,
-                "La cita no existe."
-        ));
+        cita.setFechaHora(request.getFechaHora());
+        cita.setEstado(request.getEstado());
+        cita.setCliente(cliente);
+        cita.setServicio(servicio);
+        cita.setEmpleado(empleado);
+
+        return citaRepository.save(cita);
     }
 }

@@ -405,7 +405,7 @@ function validarCita(){
     const fechaSeleccionada=new Date(fechaHora);
     const fechaActual=new Date();
 
-    if(fechaSeleccionada<fechaActual){
+    if(citaEditandoId===null && fechaSeleccionada<fechaActual){
         mostrarAlerta("✗ La cita no puede tener una fecha pasada.","danger");
         return false;
     }
